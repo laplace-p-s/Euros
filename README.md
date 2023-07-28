@@ -23,7 +23,7 @@ $ npm run build
 5. Set up your database
 6. Set .env file:
 ```bash
-$ cp .env .env.example
+$ cp .env.example .env
 $ php artisan key:generate
 ```
 7. Describe the configuration in the .env file
