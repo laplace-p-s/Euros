@@ -5,6 +5,9 @@ This application has the function of recording attendance and leaving work on a 
 It includes a function to copy records including memos from the list state to the clipboard in TSV-like format.
 It also has a simple authentication function, so it is possible for multiple people to have individual data while sharing it on a single server.
 
+### Origin of the Project Name
+The name of this project, "Euros," is taken from the Greek god of wind, especially the east wind.
+
 ## Usage
 1. Clone the repository:
 ```bash
@@ -40,6 +43,8 @@ $ php artisan migrate
 - Framework: Laravel 9.42.2
 - Library: tailwindCSS 3.1.0, jQuery 3.6.3
 
+## Contributing
+- [Code of conduct](./CODE_OF_CONDUCT.md)
 
 ## License
 MIT License
