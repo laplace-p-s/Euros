@@ -8,6 +8,9 @@ It also has a simple authentication function, so it is possible for multiple peo
 ### Origin of the Project Name
 The name of this project, "Euros," is taken from the Greek god of wind, especially the east wind.
 
+### App Screenshots
+Click [here](./doc/screenshots.md) for screenshots of the application.
+
 ## Usage
 1. Clone the repository:
 ```bash
