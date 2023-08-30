@@ -3,7 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" type="image/x-icon"  href="{{ asset('/favicon.ico') }}">
+        @if(config('euros.use_ssl'))
+            <link rel="shortcut icon" type="image/x-icon"  href="{{ secure_asset('/favicon.ico') }}">
+        @else
+            <link rel="shortcut icon" type="image/x-icon"  href="{{ asset('/favicon.ico') }}">
+        @endif
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
