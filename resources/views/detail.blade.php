@@ -11,6 +11,14 @@
                     $('#del_form').submit();
                 }
             });
+            $('.add_modal_btn').on('click', function (){
+                $('#add_modal_bg').show();
+                $('#add_modal').show();
+            });
+            $('#add_modal_bg').on('click', function (){
+                $('#add_modal_bg').hide();
+                $('#add_modal').hide();
+            });
         });
     </script>
     <x-slot name="header">
@@ -71,6 +79,11 @@
                     </div>
                     {{--テーブル表示エリア--}}
                     <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+                    {{--ボタン表示エリア--}}
+                    <button type="button" class="btn-purple-to-blue add_modal_btn">
+                        <i class="fas fa-plus"></i>&nbsp;記録の手動追加
+                    </button>
+                    {{--ボタン表示エリア--}}
                     {{-- 検索結果表示エリア --}}
                     <div class="flex justify-evenly mt-4">
                         <div class="overflow-x-auto w-auto max-w-1/2">
@@ -159,4 +172,37 @@
             </div>
         </div>
     </div>
+    {{-- Modal area --}}
+    <div id="add_modal_bg" tabindex="-1" class="fixed bg-gray-900 opacity-30 w-screen h-screen z-10 top-0 left-0 right-0 hidden"></div>
+    {{-- Modal area --}}
+    {{-- Modal Contents --}}
+    <div id="add_modal" class="fixed z-20 top-0 left-0 right-0 mx-auto mt-32 w-3/4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg hidden">
+        <div class="p-6 text-gray-900">
+            <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">記録の手動追加</h3>
+            {{-- 区分 --}}
+            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="grid-year">区分</label>
+            <div class="flex items-center mb-4">
+                <input checked id="record-method-1" type="radio" value="1" name="record-method" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="record-method-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">出勤</label>
+            </div>
+            <div class="flex items-center">
+                <input id="record-method-2" type="radio" value="2" name="record-method" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="record-method-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">退勤</label>
+            </div>
+            {{-- 日付 --}}
+            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-1 mt-4" for="grid-year">日付</label>
+            <div>
+                <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$detail_data['date']}}</label>
+            </div>
+            {{-- 時刻 --}}
+            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2 mt-4" for="grid-year">時刻</label>
+            <div>
+                <input type="time" name="time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-1/4" placeholder="">
+            </div>
+            <div class="flex flex-row-reverse">
+                <button type="button" class="btn-blue ml-auto" name="action" value="add_submit">登録</button>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Contents --}}
 </x-app-layout>
