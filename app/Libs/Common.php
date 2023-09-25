@@ -91,6 +91,8 @@ class Common
                 'week' => $tgt_day->dayOfWeek, //日が0,土が6
                 's_datetime' => '-',
                 'e_datetime' => '-',
+                'is_manual_s' => 0,
+                'is_manual_e' => 0,
                 'work_time' => '-',
                 'memo' => '',
                 'holiday' => 0,
@@ -127,10 +129,12 @@ class Common
         foreach ($records_attend as $record){
             $tmp_date = new Carbon($record->record_date);
             $result_list[$tmp_date->day-1]['s_datetime'] = $tmp_date->format('H:i:s');
+            $result_list[$tmp_date->day-1]['is_manual_s'] = $record->is_manual;
         }
         foreach ($records_leave as $record){
             $tmp_date = new Carbon($record->record_date);
             $result_list[$tmp_date->day-1]['e_datetime'] = $tmp_date->format('H:i:s');
+            $result_list[$tmp_date->day-1]['is_manual_e'] = $record->is_manual;
         }
         //勤務時間計算処理 - 日付をまたぐものはひとまず考えないものとする
         $count = 0;

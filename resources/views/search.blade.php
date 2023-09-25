@@ -238,8 +238,16 @@
                                             <br><span class="" style="font-size: .7rem;">{{$result_item['holiday_name']}}</span>
                                         @endif
                                     </th>
+                                    @if($result_item['is_manual_s'] == '1')
+                                    <td class="py-4 px-6 s_datetime">{{$result_item['s_datetime']}}<span class="font-bold text-black dark:text-white">*</span></td>
+                                    @else
                                     <td class="py-4 px-6 s_datetime">{{$result_item['s_datetime']}}</td>
+                                    @endif
+                                    @if($result_item['is_manual_e'] == '1')
+                                    <td class="py-4 px-6 e_datetime">{{$result_item['e_datetime']}}<span class="font-bold text-black dark:text-white">*</span></td>
+                                    @else
                                     <td class="py-4 px-6 e_datetime">{{$result_item['e_datetime']}}</td>
+                                    @endif
                                     <td class="py-4 px-6 work_time">{{$result_item['work_time']}}</td>
                                     <td class="memo py-4 px-6"><span class="memo_show">{{$result_item['memo']}}</span><input type="text" class="memo_input memo-input" style="display: none" value="{{$result_item['memo']}}"/></td>
                                     <td class="py-4 px-6">

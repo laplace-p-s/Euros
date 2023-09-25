@@ -111,6 +111,9 @@
                                         <th scope="row" class="py-4 px-6 font-thin text-gray-900 whitespace-nowrap dark:text-white">
                                         @endif
                                             {{$attends->record_date}}
+                                            @if($attends->is_manual == '1')
+                                                <span class="font-bold text-black dark:text-white">*</span>
+                                            @endif
                                         </th>
                                         <td class="py-4 px-6">
                                             <button class="btn_show btn-purple-to-blue-b group">
@@ -151,6 +154,9 @@
                                         <th scope="row" class="py-4 px-6 font-thin text-gray-900 whitespace-nowrap dark:text-white">
                                         @endif
                                             {{$leaves->record_date}}
+                                            @if($leaves->is_manual == '1')
+                                                <span class="font-bold text-black dark:text-white">*</span>
+                                            @endif
                                         </th>
                                         <td class="py-4 px-6">
                                             <button class="btn_show btn-purple-to-blue-b group">
