@@ -122,6 +122,7 @@ class SearchController extends Controller
         //画面描画情報の生成
         $detail_data = array();
         $detail_data['date']       = $tgt_date->isoFormat('YYYY/MM/DD (ddd)'); //日付
+        $detail_data['date_orig']  = $tgt_date->isoFormat('YYYY-MM-DD');
         $detail_data['s_datetime'] = $s_datetime; //出勤時間
         $detail_data['e_datetime'] = $e_datetime; //退勤時間
         $detail_data['work_time']  = $work_time; //勤務時間
@@ -132,6 +133,26 @@ class SearchController extends Controller
 
         $param = compact('detail_data','tgt_date','records_attend','records_leave');
         return view('detail',$param);
+    }
+
+    public function addRecord(Request $request){
+        //dd($request);
+        //パラメータの取得
+        $param = $request->all();
+        $action = array_key_exists('action',$param) ? $param['action'] : null;
+        if (!is_null($action)){
+            // 格納データのセット
+            $record = new Record();
+            $record->user_id = Auth::id();
+            $record->record_date = new Carbon($param['record-date'].' '.$param['record-time']);
+            $record->method = $param['record-method'];
+            $record->is_manual = 1;
+            // 格納データの保存
+            //TODO:エラー制御の実装
+            $record->save();
+
+            return redirect('search');
+        }
     }
 
     private function setupSelectItemYear(){

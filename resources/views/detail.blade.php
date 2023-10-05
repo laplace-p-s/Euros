@@ -185,29 +185,33 @@
     <div id="add_modal" class="fixed z-20 top-0 left-0 right-0 mx-auto mt-32 w-3/4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg hidden">
         <div class="p-6 text-gray-900">
             <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">記録の手動追加</h3>
-            {{-- 区分 --}}
-            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="grid-year">区分</label>
-            <div class="flex items-center mb-4">
-                <input checked id="record-method-1" type="radio" value="1" name="record-method" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                <label for="record-method-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">出勤</label>
-            </div>
-            <div class="flex items-center">
-                <input id="record-method-2" type="radio" value="2" name="record-method" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                <label for="record-method-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">退勤</label>
-            </div>
-            {{-- 日付 --}}
-            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-1 mt-4" for="grid-year">日付</label>
-            <div>
-                <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$detail_data['date']}}</label>
-            </div>
-            {{-- 時刻 --}}
-            <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2 mt-4" for="grid-year">時刻</label>
-            <div>
-                <input type="time" name="time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-1/4" placeholder="">
-            </div>
-            <div class="flex flex-row-reverse">
-                <button type="button" class="btn-blue ml-auto" name="action" value="add_submit">登録</button>
-            </div>
+            <form method="post" action="{{route('detail.add_record')}}">
+                @csrf
+                {{-- 区分 --}}
+                <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="grid-year">区分</label>
+                <div class="flex items-center mb-4">
+                    <input checked id="record-method-1" type="radio" value="1" name="record-method" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="record-method-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">出勤</label>
+                </div>
+                <div class="flex items-center">
+                    <input id="record-method-2" type="radio" value="2" name="record-method" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="record-method-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">退勤</label>
+                </div>
+                {{-- 日付 --}}
+                <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-1 mt-4" for="grid-year">日付</label>
+                <div>
+                    <label class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$detail_data['date']}}</label>
+                    <input type="hidden" name="record-date" value="{{$detail_data['date_orig']}}">
+                </div>
+                {{-- 時刻 --}}
+                <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2 mt-4" for="grid-year">時刻</label>
+                <div>
+                    <input type="time" name="record-time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-1/4" placeholder="">
+                </div>
+                <div class="flex flex-row-reverse">
+                    <button type="submit" class="btn-blue ml-auto" name="action" value="add_submit">登録</button>
+                </div>
+            </form>
         </div>
     </div>
     {{-- Modal Contents --}}

@@ -29,6 +29,7 @@ Route::get('/search', [SearchController::class, 'show'])->middleware(['auth', 'v
 Route::post('/search', [SearchController::class, 'search'])->middleware(['auth', 'verified'])->name('search.post');
 Route::get('/detail', function (){return redirect('/home');}); //エラー防止
 Route::post('/detail', [SearchController::class, 'detailPost'])->middleware(['auth', 'verified'])->name('detail');
+Route::post('/add_record', [SearchController::class, 'addRecord'])->middleware(['auth', 'verified'])->name('detail.add_record');
 
 //設定
 Route::get('/settings', [SettingsController::class, 'index'])->middleware(['auth', 'verified'])->name('settings.index');
