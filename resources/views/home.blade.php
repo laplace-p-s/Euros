@@ -122,7 +122,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg mt-3 sm:w-1/2">
                 <div class="p-6 text-gray-900">
                     <span class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_disp'] }} サマリ</span><br>
-                    <span class="text-xs text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_announce'] }} 現在</span>
+                    <span class="text-xs text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_announce'] }} 現在</span><br>
+                    <span class="text-blue-600"><a href="{{ route('home', ['summary_y' => $summary_info['last_month_y'], 'summary_m'=>$summary_info['last_month_m']]) }}"><i class="fas fa-arrow-left"></i>&nbsp;前月</a></span>
                 </div>
                 <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

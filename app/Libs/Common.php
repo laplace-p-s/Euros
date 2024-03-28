@@ -41,7 +41,7 @@ class Common
         return $ret;
     }
 
-    static public function getSummaryInfo(Carbon $now,array $calendar){
+    static public function getSummaryInfo(Carbon $now,array $calendar,$summary_current_year,$summary_current_month){
         //集計
         $w_time_sum = 0;
         $w_day = 0;
@@ -71,11 +71,17 @@ class Common
         }
         //表示用データセット
         $ret = array();
-        $ret['now_disp'] = $now->format('Y年m月');
+        $ret['now_disp'] = $summary_current_year.'年'.$summary_current_month.'月';
         $ret['now_announce'] = $now->format('Y/m/d H:i:s');
         $ret['work_time_sum'] = number_format(round($w_time_sum,1),1).' H';
         $ret['work_time_day'] = number_format(round($w_day,1),1).' day';
         $ret['work_time_day_h'] = number_format(round($w_day_h,1),1).' day';
+        $last_month = $now->copy()->subMonth(1);
+        $next_month = $now->copy()->addMonth(1);
+        $ret['last_month_y'] = $last_month->year;
+        $ret['last_month_m'] = $last_month->month;
+        $ret['next_month_y'] = $next_month->year;
+        $ret['next_month_m'] = $next_month->month;
 
         return $ret;
     }
