@@ -123,7 +123,10 @@
                 <div class="p-6 text-gray-900">
                     <span class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_disp'] }} サマリ</span><br>
                     <span class="text-xs text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_announce'] }} 現在</span><br>
-                    <span class="text-blue-600"><a href="{{ route('home', ['summary_y' => $summary_info['last_month_y'], 'summary_m'=>$summary_info['last_month_m']]) }}"><i class="fas fa-arrow-left"></i>&nbsp;前月</a></span>
+                    <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['last_month_y'], 'summary_m'=>$summary_info['last_month_m']]) }}"><i class="fas fa-arrow-left"></i>&nbsp;前月</a></span>
+                    @if($summary_info['is_display_next'])
+                    <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['next_month_y'], 'summary_m'=>$summary_info['next_month_m']]) }}">翌月&nbsp;<i class="fas fa-arrow-right"></i></a></span>
+                    @endif
                 </div>
                 <div class="relative overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
