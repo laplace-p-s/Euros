@@ -132,16 +132,16 @@
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <tbody>
                             <tr class="bg-white dark:bg-gray-800">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">勤務時間合計</th>
-                                <td class="px-6 py-4">{{ $summary_info['work_time_sum'] }}</td>
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">勤務時間合計</th>
+                                <td class="px-6 py-3">{{ $summary_info['work_time_sum'] }}</td>
                             </tr>
                             <tr class="bg-white dark:bg-gray-800">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">実働日数</th>
-                                <td class="px-6 py-4">{{ $summary_info['work_time_day'] }}</td>
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">実働日数</th>
+                                <td class="px-6 py-3">{{ $summary_info['work_time_day'] }}</td>
                             </tr>
                             <tr class="bg-white dark:bg-gray-800">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">休日実働日数</th>
-                                <td class="px-6 py-4">{{ $summary_info['work_time_day_h'] }}</td>
+                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">休日実働日数</th>
+                                <td class="px-6 py-3">{{ $summary_info['work_time_day_h'] }}</td>
                             </tr>
                         </tbody>
                     </table>
