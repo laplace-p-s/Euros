@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard',function (){return redirect('/home');}); //エラー防止 - 旧ルートの転送措置
-Route::get('/home', [HomeController::class, 'show'])->middleware(['auth', 'verified'])->name('home');
+//Route::get('/home', [HomeController::class, 'show'])->middleware(['auth', 'verified'])->name('home');
 Route::get('/search', [SearchController::class, 'show'])->middleware(['auth', 'verified'])->name('search');
 Route::post('/search', [SearchController::class, 'search'])->middleware(['auth', 'verified'])->name('search.post');
 Route::get('/detail', function (){return redirect('/home');}); //エラー防止
@@ -50,6 +50,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::middleware(['2fa', 'verified'])->group(function () {
+        Route::get('/home', [HomeController::class, 'show'])->name('home');
+        Route::post('/2fa', function () {
+            return redirect(route('home'));
+        })->name('2fa');
+    });
 });
 
 require __DIR__.'/auth.php';
