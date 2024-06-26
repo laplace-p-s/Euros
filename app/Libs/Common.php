@@ -151,7 +151,7 @@ class Common
                 $e_date = new Carbon('2020-01-10 '.$result['e_datetime']);
                 //分で出力し時間に変換、その後少数第二位で四捨五入
                 $output_work_time = $s_date->diffInMinutes($e_date) / 60;
-                if ($output_work_time > 4.0) $output_work_time = $output_work_time - 1; //休憩時間を加味し、4時間を超える場合は-1Hする
+                if ($output_work_time > 4.5) $output_work_time = $output_work_time - 1; //休憩時間を加味し、4.5時間を超える場合は-1Hする
                 $result_list[$count]['work_time'] = round($output_work_time,1).' H';
             }
             $count++;
