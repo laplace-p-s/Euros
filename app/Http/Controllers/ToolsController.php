@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\YearlyLeaveCount;
 
 class ToolsController extends Controller
@@ -23,10 +24,36 @@ class ToolsController extends Controller
         $sub_yearly_leave_count = YearlyLeaveCount::where('user_id',Auth::id())
             ->where('yearly',$sub_yearly_year)
             ->first();
-        $yearly_paid_leave = $yearly_leave_count['added_paid_leave'];
-        $sub_yearly_paid_leave = $sub_yearly_leave_count['added_paid_leave'];
-        $annual_leave = $yearly_leave_count['added_annual_leave'];
+        $yearly_paid_leave = $yearly_leave_count['added_paid_leave']; //今年度配布有給
+        $sub_yearly_paid_leave = $sub_yearly_leave_count['added_paid_leave']; //昨年度配布有給
+        $annual_leave = $yearly_leave_count['added_annual_leave']; //年度休暇
         //履歴から使用日数を減算処理
+        // 昨年度の合計有給使用量を集計し、昨年度の数値から差し引く
+        $sub_paid_leave_sum_obj = DB::table('leave_histories')
+            ->selectRaw('SUM(leave_amount) as sub_paid_leave_sum')
+            ->where('user_id',Auth::id())
+            ->where('yearly',$sub_yearly_year)
+            ->where('leave_class','1')
+            ->groupBy('yearly')
+            ->get();
+        //TODO:データが0件だと落ちる
+        $sub_paid_leave_sum = $sub_paid_leave_sum_obj[0]->sub_paid_leave_sum; //昨年度使用有給合計
+        $sub_yearly_paid_leave = $sub_yearly_paid_leave - $sub_paid_leave_sum; //計算
+        // 今年度の合計有給使用量を集計し、昨年度の数値から差し引く　マイナスになった場合は今年度の数値から差し引く
+        $paid_leave_sum_obj = DB::table('leave_histories')
+            ->selectRaw('SUM(leave_amount) as paid_leave_sum')
+            ->where('user_id',Auth::id())
+            ->where('yearly',$yearly_year)
+            ->where('leave_class','1')
+            ->groupBy('yearly')
+            ->get();
+        //TODO:データが0件だと落ちる
+        $paid_leave_sum = $paid_leave_sum_obj[0]->paid_leave_sum; //昨年度使用有給合計
+        $sub_yearly_paid_leave = $sub_yearly_paid_leave - $paid_leave_sum; //計算1 昨年度-今年度計
+        if($sub_yearly_paid_leave < 0){
+            $yearly_paid_leave = $yearly_paid_leave - $sub_yearly_paid_leave; //計算2 今年度-昨年度余剰分
+            $sub_yearly_paid_leave = 0.0;
+        }
         $compensatory_leave = 0;
         //画面生成
         $paid_leave = $yearly_paid_leave + $sub_yearly_paid_leave;

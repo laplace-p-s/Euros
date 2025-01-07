@@ -59,10 +59,10 @@
                     <!---->
                     <div class="p-6 text-gray-900">
                         <a href="{{ route('paid_leave') }}">
-                            <button type="button" class="btn-blue"><i class="fas fa-cat"></i>&nbsp;{{ __('Paid Leave') }}</button>
+                            <button type="button" class="btn-blue"><i class="fas fa-plus"></i>&nbsp;有給使用登録</button>
                         </a>
                         <a href="{{ route('paid_leave') }}">
-                            <button type="button" class="btn-blue"><i class="fas fa-cat"></i>&nbsp;{{ __('Paid Leave') }}</button>
+                            <button type="button" class="btn-blue"><i class="fas fa-plus-circle"></i>&nbsp;代休加算/使用登録</button>
                         </a>
                     </div>
                     <!---->
