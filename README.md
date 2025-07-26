@@ -42,8 +42,8 @@ $ php artisan migrate
 *Refer to the Laravel documentation for detailed settings in the env file.
 
 ## Technologies Used
-- Language: PHP 8.0
-- Framework: Laravel 9.42.2
+- Language: PHP 8.0,8.1,8.2,8.3
+- Framework: Laravel 10.48.29
 - Library: tailwindCSS 3.1.0, jQuery 3.6.3
 
 ## Contributing
