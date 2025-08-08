@@ -206,7 +206,7 @@
                 {{-- 時刻 --}}
                 <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2 mt-4" for="grid-year">時刻</label>
                 <div>
-                    <input type="time" name="record-time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-1/4" placeholder="">
+                    <input type="time" name="record-time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-1/6" placeholder="">
                 </div>
                 <div class="flex flex-row-reverse">
                     <button type="submit" class="btn-blue ml-auto" name="action" value="add_submit">登録</button>
