@@ -18,7 +18,7 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('search')" :active="request()->routeIs('search')">
-                        <i class="fas fa-search"></i>&nbsp;{{ __('Search') }}
+                        <i class="fas fa-calendar-day"></i>&nbsp;{{ __('Search') }}
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -50,7 +50,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            <i class="fas fa-user"></i>&nbsp;{{ __('Profile') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -60,7 +60,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                <i class="fas fa-sign-out-alt"></i>&nbsp;{{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -83,17 +83,22 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                {{ __('Home') }}
+                <i class="fas fa-home"></i>&nbsp;{{ __('Home') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('search')" :active="request()->routeIs('search')">
-                {{ __('Search') }}
+                <i class="fas fa-calendar-day"></i>&nbsp;{{ __('Search') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('tools')" :active="request()->routeIs('tools')">
+                <i class="fas fa-toolbox"></i>&nbsp;{{ __('Tools') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('settings.index')" :active="request()->routeIs('settings.index')">
-                {{ __('Settings') }}
+                <i class="fas fa-cog"></i>&nbsp;{{ __('Settings') }}
             </x-responsive-nav-link>
         </div>
 
@@ -106,7 +111,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    <i class="fas fa-user"></i>&nbsp;{{ __('Profile') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -116,7 +121,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        <i class="fas fa-sign-out-alt"></i>&nbsp;{{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
