@@ -15,9 +15,13 @@ class SettingsController extends Controller
     }
 
     public function holiday_show(Request $request){
-        //画面生成
+        //リクエスト時の年を取得
+        $now = new Carbon('now');
+        $now_year = $now->year;
+        //結果リストを取得
         $result_list = $this->get_holiday_list();
-        $param = compact('result_list');
+        //画面生成
+        $param = compact('result_list','now_year');
         return view('settings_holiday',$param);
     }
 
