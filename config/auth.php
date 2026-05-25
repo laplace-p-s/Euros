@@ -102,10 +102,24 @@ return [
     |
     | Here you may define the amount of seconds before a password confirmation
     | times out and the user is prompted to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
+    | confirmation screen. The default value is 3 hours, but it is
+    | recommended to set a shorter timeout for security reasons.
     |
     */
 
     'password_timeout' => 900,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable User Registration
+    |--------------------------------------------------------------------------
+    |
+    | This option controls whether user registration is enabled or disabled.
+    | Set this to true to allow new users to register, or false to disable
+    | the registration page.
+    |
+    */
+
+    'enable_registration' => env('ENABLE_REGISTRATION', false),
 
 ];
