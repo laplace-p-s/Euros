@@ -56,6 +56,7 @@ vendor/bin/pint                   # コードスタイル整形(Laravel Pint)
 - 1 日複数回打刻時の採用値が不統一: `getTimeInfo` は `first()`(desc 順)、`detailPost` はループ最後の値。
 - `SearchController::addRecord` は `action` が無い場合に何も return せず空レスポンスになる。
 - `SettingsController::add_holiday_from_template` は `Holiday::insert()` のため `created_at`/`updated_at` が入らず、重複取り込みのチェックもない。
+- `application-logo.blade.php` のロゴ画像 src が `env('APP_URL').'/euros/'` とサブディレクトリをハードコードしており、ルート直下で動かすローカル環境(Sail 等)では 404 になる(ログイン画面のリンク切れ)。実ファイルは `public/image/euros_logo.png`。修正時は `asset('image/euros_logo.png')` に置き換える。
 
 ### 未使用・放置コード
 
