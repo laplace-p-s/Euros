@@ -27,8 +27,8 @@
             {{-- Infoエリア --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
                 <div class="p-4 text-gray-900">
-                    <button type="button" onclick="location.href='./'" class="btn-disabled w-36" disabled><i class="fas fa-cog"></i>&nbsp;基本設定</button>
-                    <span class="mt-1 ml-2 text-sm text-gray-600 dark:text-gray-400">アプリの全般的な設定（開発中）</span>
+                    <button type="button" onclick="location.href='{{ route('settings.general') }}'" class="!mr-0 !mb-0 btn-blue w-36"><i class="fas fa-cog"></i>&nbsp;基本設定</button>
+                    <span class="mt-1 ml-2 text-sm text-gray-600 dark:text-gray-400">年度・有休付与等の基本設定</span>
                 </div>
                 <div class="p-4 text-gray-900">
                     <button type="button" onclick="location.href='{{ route('settings.holiday') }}'" class="!mr-0 !mb-0 btn-blue w-36"><i class="far fa-calendar-check"></i>&nbsp;祝祭日設定</button>

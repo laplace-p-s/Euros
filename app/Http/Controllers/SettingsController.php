@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Holiday;
 use App\Models\HolidayTemplate;
+use App\Models\LeaveSetting;
+use App\Services\LeaveService;
 
 class SettingsController extends Controller
 {
@@ -59,6 +61,38 @@ class SettingsController extends Controller
         }
 
         return $ret_array;
+    }
+
+    /**
+     * 基本設定画面表示
+     */
+    public function generalShow(Request $request){
+        $leaveService = new LeaveService();
+        $settings = $leaveService->getOrCreateSettings(Auth::id());
+        $param = compact('settings');
+        return view('settings_general', $param);
+    }
+
+    /**
+     * 基本設定保存
+     */
+    public function generalSave(Request $request){
+        $request->validate([
+            'fiscal_year_start_month' => 'required|integer|min:1|max:12',
+            'paid_leave_auto_grant' => 'required|boolean',
+            'paid_leave_grant_days' => 'required|numeric|min:0',
+            'annual_leave_grant_days' => 'required|numeric|min:0',
+        ]);
+
+        $leaveService = new LeaveService();
+        $settings = $leaveService->getOrCreateSettings(Auth::id());
+        $settings->fiscal_year_start_month = $request->input('fiscal_year_start_month');
+        $settings->paid_leave_auto_grant = $request->input('paid_leave_auto_grant');
+        $settings->paid_leave_grant_days = $request->input('paid_leave_grant_days');
+        $settings->annual_leave_grant_days = $request->input('annual_leave_grant_days');
+        $settings->save();
+
+        return redirect()->route('settings.general')->with('message', '設定を保存しました');
     }
 
     private function add_holiday_from_template(){

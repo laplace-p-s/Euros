@@ -27,11 +27,8 @@
             {{-- Infoエリア --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
                 <div class="p-4 text-gray-900">
-{{--                    <a href="{{ route('paid_leave') }}">--}}
-{{--                        <button type="button" class="btn-blue"><i class="fas fa-cat"></i>&nbsp;{{ __('Paid Leave') }}</button>--}}
-{{--                    </a>--}}
-                    <button type="button" onclick="location.href='./'" class="btn-disabled w-36" disabled><i class="fas fa-cat"></i>&nbsp;{{ __('Paid Leave') }}</button>
-                    <span class="mt-1 ml-2 text-sm text-gray-600 dark:text-gray-400">有給の使用履歴を登録し管理出来るツール（開発中）</span>
+                    <button type="button" onclick="location.href='{{ route('leave') }}'" class="!mr-0 !mb-0 btn-blue w-36"><i class="fas fa-umbrella-beach"></i>&nbsp;{{ __('Paid Leave') }}</button>
+                    <span class="mt-1 ml-2 text-sm text-gray-600 dark:text-gray-400">有休・年次休暇・代休の使用履歴を管理</span>
                 </div>
             </div>
         </div>
