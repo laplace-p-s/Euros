@@ -157,7 +157,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="fiscal-year-select">
                             年度 <span class="normal-case font-normal">（{{ $startMonth }}月〜翌{{ $startMonth > 1 ? $startMonth - 1 : 12 }}月）</span>
                         </label>
-                        <select id="fiscal-year-select" class="select-normal">
+                        <select id="fiscal-year-select" class="select-normal w-full">
                             @foreach($fiscalYears as $fy)
                             <option value="{{ $fy }}" {{ $fy == $selectedFY ? 'selected' : '' }}>{{ $fy }}年度</option>
                             @endforeach

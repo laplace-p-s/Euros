@@ -45,7 +45,7 @@
                             </h3>
                             <div class="mb-4">
                                 <label for="fiscal_year_start_month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">年度開始月</label>
-                                <select id="fiscal_year_start_month" name="fiscal_year_start_month" class="select-normal w-32">
+                                <select id="fiscal_year_start_month" name="fiscal_year_start_month" class="select-normal w-20">
                                     @for($m = 1; $m <= 12; $m++)
                                     <option value="{{ $m }}" {{ $settings->fiscal_year_start_month == $m ? 'selected' : '' }}>{{ $m }}月</option>
                                     @endfor

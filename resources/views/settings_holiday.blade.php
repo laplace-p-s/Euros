@@ -126,7 +126,7 @@
                         <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="year-select">
                             表示年
                         </label>
-                        <select id="year-select" class="select-normal">
+                        <select id="year-select" class="select-normal w-full">
                             @foreach($year_list as $y)
                             <option value="{{ $y }}" {{ $y == $selected_year ? 'selected' : '' }}>{{ $y }}年</option>
                             @endforeach
