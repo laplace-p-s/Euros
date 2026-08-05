@@ -17,37 +17,77 @@ class SettingsController extends Controller
     }
 
     public function holiday_show(Request $request){
-        //画面生成
-        $result_list = $this->get_holiday_list();
-        $param = compact('result_list');
-        return view('settings_holiday',$param);
+        $now = Carbon::now();
+        $selected_year = (int)$request->input('year', $now->year);
+
+        // 年リスト生成（登録済み年 + テンプレート年 + 現在年を合算）
+        $registered_years = Holiday::where('user_id', Auth::id())
+            ->selectRaw('YEAR(holiday_date) as y')
+            ->distinct()
+            ->pluck('y')
+            ->toArray();
+        $template_years = HolidayTemplate::select('year')
+            ->distinct()
+            ->pluck('year')
+            ->toArray();
+        $all_years = array_unique(array_merge($registered_years, $template_years, [$now->year]));
+        rsort($all_years);
+        $year_list = $all_years;
+
+        $result_list = $this->get_holiday_list($selected_year);
+        $has_template = HolidayTemplate::where('year', $selected_year)->exists();
+        $param = compact('result_list', 'year_list', 'selected_year', 'has_template');
+        return view('settings_holiday', $param);
     }
 
     public function holiday_add(Request $request){
-        //パラメータの取得
         $param = $request->all();
-        if ($param['action'] == 'template_add'){
-            $this->add_holiday_from_template();
-        }else{
-            //データセット
-            $holiday = new Holiday();
-            $holiday->user_id = Auth::id();
-            $holiday->holiday_date = $param['date'];
-            $holiday->name = $param['name'];
-            $holiday->note = $param['note'];
-            $holiday->save();
-        }
-        //画面生成
-        $result_list = $this->get_holiday_list();
-        $param = compact('result_list');
-        return view('settings_holiday',$param);
+        $year = $request->input('selected_year', Carbon::now()->year);
+
+        $holiday = new Holiday();
+        $holiday->user_id = Auth::id();
+        $holiday->holiday_date = $param['date'];
+        $holiday->name = $param['name'];
+        $holiday->note = $param['note'] ?? null;
+        $holiday->save();
+
+        return redirect()->route('settings.holiday', ['year' => $year])
+            ->with('message', '祝祭日を追加しました');
     }
 
-    private function get_holiday_list(){
-        $ret_array = array();
-        $holiday_list = Holiday::where('user_id',Auth::id())
+    public function holiday_template_add(Request $request){
+        $year = (int)$request->input('year', Carbon::now()->year);
+        $this->add_holiday_from_template($year);
+
+        return redirect()->route('settings.holiday', ['year' => $year])
+            ->with('message', 'テンプレートから祝祭日を追加しました');
+    }
+
+    public function holiday_template_preview(Request $request){
+        $year = (int)$request->input('year', Carbon::now()->year);
+        $templates = HolidayTemplate::where('year', $year)
             ->orderBy('holiday_date')
             ->get();
+
+        $ret = array();
+        foreach ($templates as $t){
+            $date = new Carbon($t->holiday_date);
+            $ret[] = array(
+                'date' => $date->isoFormat('YYYY/MM/DD (ddd)'),
+                'name' => $t->name,
+            );
+        }
+        return response()->json($ret);
+    }
+
+    private function get_holiday_list($year = null){
+        $ret_array = array();
+        $query = Holiday::where('user_id', Auth::id());
+        if ($year) {
+            $query->whereYear('holiday_date', $year);
+        }
+        $holiday_list = $query->orderBy('holiday_date')->get();
+
         $c = 0;
         foreach ($holiday_list as $item){
             $date = new Carbon($item->holiday_date);
@@ -95,10 +135,11 @@ class SettingsController extends Controller
         return redirect()->route('settings.general')->with('message', '設定を保存しました');
     }
 
-    private function add_holiday_from_template(){
-        $now = Carbon::now();
-        $now_year = $now->year;
-        $templates = HolidayTemplate::where('year',$now_year)
+    private function add_holiday_from_template($year = null){
+        if ($year === null) {
+            $year = Carbon::now()->year;
+        }
+        $templates = HolidayTemplate::where('year', $year)
             ->orderBy('holiday_date')
             ->get();
         $data = array();

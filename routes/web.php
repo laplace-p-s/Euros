@@ -36,6 +36,8 @@ Route::post('/add_record', [SearchController::class, 'addRecord'])->middleware([
 Route::get('/settings', [SettingsController::class, 'index'])->middleware(['auth', 'verified'])->name('settings.index');
 Route::get('/settings/holiday', [SettingsController::class, 'holiday_show'])->middleware(['auth', 'verified'])->name('settings.holiday');
 Route::post('/settings/holiday', [SettingsController::class, 'holiday_add'])->middleware(['auth', 'verified'])->name('settings.holiday_add');
+Route::post('/settings/holiday/template', [SettingsController::class, 'holiday_template_add'])->middleware(['auth', 'verified'])->name('settings.holiday_template_add');
+Route::get('/settings/holiday/template_preview', [SettingsController::class, 'holiday_template_preview'])->middleware(['auth', 'verified'])->name('settings.holiday_template_preview');
 Route::post('/settings/holiday/delete', [ApiController::class, 'holidayDelete'])->middleware(['auth', 'verified'])->name('settings.holiday_del');
 
 //設定 - 基本設定
