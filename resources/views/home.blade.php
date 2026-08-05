@@ -119,32 +119,76 @@
             </div>
             {{-- mainエリア --}}
             {{-- summaryエリア --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg mt-3 sm:w-1/2">
-                <div class="p-6 text-gray-900">
-                    <span class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_disp'] }} サマリ</span><br>
-                    <span class="text-xs text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_announce'] }} 現在</span><br>
-                    <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['last_month_y'], 'summary_m'=>$summary_info['last_month_m']]) }}"><i class="fas fa-arrow-left"></i>&nbsp;前月</a></span>
-                    @if($summary_info['is_display_next'])
-                    <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['next_month_y'], 'summary_m'=>$summary_info['next_month_m']]) }}">翌月&nbsp;<i class="fas fa-arrow-right"></i></a></span>
-                    @endif
+            <div class="flex flex-col sm:flex-row gap-3 mt-3">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg sm:w-1/2">
+                    <div class="p-6 text-gray-900">
+                        <span class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_disp'] }} サマリ</span><br>
+                        <span class="text-xs text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_announce'] }} 現在</span><br>
+                        <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['last_month_y'], 'summary_m'=>$summary_info['last_month_m']]) }}"><i class="fas fa-arrow-left"></i>&nbsp;前月</a></span>
+                        @if($summary_info['is_display_next'])
+                        <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['next_month_y'], 'summary_m'=>$summary_info['next_month_m']]) }}">翌月&nbsp;<i class="fas fa-arrow-right"></i></a></span>
+                        @endif
+                    </div>
+                    <div class="relative overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <tbody>
+                                <tr class="bg-white dark:bg-gray-800">
+                                    <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">勤務時間合計</th>
+                                    <td class="px-6 py-3">{{ $summary_info['work_time_sum'] }}</td>
+                                </tr>
+                                <tr class="bg-white dark:bg-gray-800">
+                                    <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">実働日数</th>
+                                    <td class="px-6 py-3">{{ $summary_info['work_time_day'] }}</td>
+                                </tr>
+                                <tr class="bg-white dark:bg-gray-800">
+                                    <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">休日実働日数</th>
+                                    <td class="px-6 py-3">{{ $summary_info['work_time_day_h'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="relative overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <tbody>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">勤務時間合計</th>
-                                <td class="px-6 py-3">{{ $summary_info['work_time_sum'] }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">実働日数</th>
-                                <td class="px-6 py-3">{{ $summary_info['work_time_day'] }}</td>
-                            </tr>
-                            <tr class="bg-white dark:bg-gray-800">
-                                <th scope="row" class="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">休日実働日数</th>
-                                <td class="px-6 py-3">{{ $summary_info['work_time_day_h'] }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                {{-- 休暇残数サマリ --}}
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg sm:w-1/2">
+                    <div class="px-5 pt-4 pb-2 flex items-center justify-between">
+                        <span class="font-medium text-gray-900 dark:text-white">{{ $leaveSummary['currentFY'] }}年度 休暇残数</span>
+                        <a href="{{ route('leave') }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline"><i class="fas fa-arrow-right"></i>&nbsp;詳細</a>
+                    </div>
+                    <div class="px-5 pb-4 space-y-3">
+                        {{-- 有休 --}}
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex-shrink-0">
+                                <i class="fas fa-umbrella-beach text-blue-600 dark:text-blue-400 text-xs"></i>
+                            </span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-baseline justify-between">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">有休</span>
+                                    <span class="text-xl font-bold text-blue-600 dark:text-blue-400">{{ number_format($leaveSummary['paidBalance']['total_remaining'], 1) }}<span class="text-xs font-normal text-gray-400"> 日</span></span>
+                                </div>
+                                <div class="flex gap-3 text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                    <span>今年度 {{ number_format($leaveSummary['paidBalance']['current_fy']['remaining'], 1) }}</span>
+                                    <span>昨年度 {{ number_format($leaveSummary['paidBalance']['prev_fy']['remaining'], 1) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border-gray-100 dark:border-gray-700">
+                        {{-- 年次休暇 --}}
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 flex-shrink-0">
+                                <i class="fas fa-calendar-day text-green-600 dark:text-green-400 text-xs"></i>
+                            </span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-baseline justify-between">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">年次休暇</span>
+                                    <span class="text-xl font-bold text-green-600 dark:text-green-400">{{ number_format($leaveSummary['annualBalance']['remaining'], 1) }}<span class="text-xs font-normal text-gray-400"> 日</span></span>
+                                </div>
+                                <div class="flex gap-3 text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                    <span>付与 {{ number_format($leaveSummary['annualBalance']['grant_days'], 1) }}</span>
+                                    <span>使用 {{ number_format($leaveSummary['annualBalance']['used_days'], 1) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             {{-- summaryエリア --}}

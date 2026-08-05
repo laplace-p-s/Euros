@@ -6,6 +6,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ToolsController;
+use App\Http\Controllers\LeaveController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,9 +38,21 @@ Route::get('/settings/holiday', [SettingsController::class, 'holiday_show'])->mi
 Route::post('/settings/holiday', [SettingsController::class, 'holiday_add'])->middleware(['auth', 'verified'])->name('settings.holiday_add');
 Route::post('/settings/holiday/delete', [ApiController::class, 'holidayDelete'])->middleware(['auth', 'verified'])->name('settings.holiday_del');
 
+//設定 - 基本設定
+Route::get('/settings/general', [SettingsController::class, 'generalShow'])->middleware(['auth', 'verified'])->name('settings.general');
+Route::post('/settings/general', [SettingsController::class, 'generalSave'])->middleware(['auth', 'verified'])->name('settings.general_save');
+
 //ツール
 Route::get('/tools', [ToolsController::class, 'index'])->middleware(['auth', 'verified'])->name('tools');
-Route::get('/paid_leave', [ToolsController::class, 'paid_leave_show'])->middleware(['auth', 'verified'])->name('paid_leave');
+
+//有給管理
+Route::get('/leave', [LeaveController::class, 'index'])->middleware(['auth', 'verified'])->name('leave');
+Route::post('/leave/auto_grant', [LeaveController::class, 'executeAutoGrant'])->middleware(['auth', 'verified'])->name('leave.auto_grant');
+Route::post('/leave/auto_grant/dismiss', [LeaveController::class, 'dismissAutoGrant'])->middleware(['auth', 'verified'])->name('leave.auto_grant.dismiss');
+Route::post('/leave/usage', [LeaveController::class, 'addUsage'])->middleware(['auth', 'verified'])->name('leave.usage.add');
+Route::post('/leave/usage/delete', [LeaveController::class, 'deleteUsage'])->middleware(['auth', 'verified'])->name('leave.usage.delete');
+Route::post('/leave/grant', [LeaveController::class, 'addGrant'])->middleware(['auth', 'verified'])->name('leave.grant.add');
+Route::post('/leave/grant/delete', [LeaveController::class, 'deleteGrant'])->middleware(['auth', 'verified'])->name('leave.grant.delete');
 
 //API
 Route::post('/register_rec', [ApiController::class, 'register'])->middleware(['auth', 'verified'])->name('register_rec');
