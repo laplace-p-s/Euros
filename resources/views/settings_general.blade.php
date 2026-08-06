@@ -100,9 +100,11 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-blue">
-                            <i class="fas fa-save"></i>&nbsp;保存
-                        </button>
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn-blue">
+                                <i class="fas fa-save"></i>&nbsp;保存
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
