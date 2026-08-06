@@ -59,6 +59,10 @@ class LeaveController extends Controller
         $annualBalance = $this->leaveService->calculateAnnualLeaveBalance($userId, $selectedFY, $startMonth, $referenceDate);
         $compBalance = $this->leaveService->calculateCompensatoryBalance($userId, $selectedFY, $startMonth, $referenceDate);
 
+        // 代休カード表示（設定ON、かつ hide_zero ON なら残0.5以上の時のみ）
+        $showCompensatory = $settings->show_compensatory
+            && (!$settings->compensatory_hide_zero || $compBalance['remaining'] >= 0.5);
+
         // 失効累積（paidBalance の detail を再利用）
         $showExpiredStock = $settings->show_expired_stock;
         $expiredStock = $showExpiredStock
@@ -81,7 +85,7 @@ class LeaveController extends Controller
             'settings', 'selectedFY', 'currentFY', 'startMonth',
             'refMode', 'referenceDate',
             'autoGrantNeeded', 'paidBalance', 'annualBalance', 'compBalance',
-            'showExpiredStock', 'expiredStock',
+            'showCompensatory', 'showExpiredStock', 'expiredStock',
             'monthlyReport', 'usageHistory', 'grantHistory', 'fiscalYears'
         );
 

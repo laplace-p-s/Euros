@@ -191,9 +191,18 @@
             </div>
 
             {{-- サマリーカード --}}
-            <div class="grid grid-cols-1 {{ $showExpiredStock ? 'md:grid-cols-6' : 'md:grid-cols-3' }} gap-4 mb-4">
+            @php
+                $cardCount = 2 + ($showCompensatory ? 1 : 0) + ($showExpiredStock ? 1 : 0);
+                $gridClass = match($cardCount) {
+                    2 => 'md:grid-cols-2',
+                    3 => 'md:grid-cols-3',
+                    4 => 'md:grid-cols-4',
+                    default => 'md:grid-cols-2',
+                };
+            @endphp
+            <div class="grid grid-cols-1 {{ $gridClass }} gap-4 mb-4">
                 {{-- 有休カード --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg {{ $showExpiredStock ? 'md:col-span-2' : '' }}">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -229,7 +238,7 @@
                 </div>
 
                 {{-- 年次休暇カード --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col {{ $showExpiredStock ? 'md:col-span-2' : '' }}">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -258,6 +267,7 @@
                 </div>
 
                 {{-- 代休カード --}}
+                @if($showCompensatory)
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
@@ -285,6 +295,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
 
                 {{-- 失効累積カード --}}
                 @if($showExpiredStock)

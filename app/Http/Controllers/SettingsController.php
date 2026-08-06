@@ -122,6 +122,8 @@ class SettingsController extends Controller
             'paid_leave_auto_grant' => 'required|boolean',
             'paid_leave_grant_days' => 'required|numeric|min:0',
             'show_expired_stock' => 'required|boolean',
+            'show_compensatory' => 'required|boolean',
+            'compensatory_hide_zero' => 'required|boolean',
             'annual_leave_grant_days' => 'required|numeric|min:0',
         ]);
 
@@ -131,6 +133,8 @@ class SettingsController extends Controller
         $settings->paid_leave_auto_grant = $request->input('paid_leave_auto_grant');
         $settings->paid_leave_grant_days = $request->input('paid_leave_grant_days');
         $settings->show_expired_stock = $request->input('show_expired_stock');
+        $settings->show_compensatory = $request->input('show_compensatory');
+        $settings->compensatory_hide_zero = $request->input('compensatory_hide_zero');
         $settings->annual_leave_grant_days = $request->input('annual_leave_grant_days');
         $settings->save();
 
