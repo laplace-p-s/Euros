@@ -54,10 +54,18 @@
                 }
             });
 
-            {{-- 年度セレクタ --}}
+            {{-- 年度セレクタ（ref_mode を保持） --}}
             $('#fiscal-year-select').on('change', function () {
                 var fy = $(this).val();
-                window.location.href = '{{ route('leave') }}?fiscal_year=' + fy;
+                window.location.href = '{{ route('leave') }}?fiscal_year=' + fy + '&ref_mode={{ $refMode }}';
+            });
+
+            {{-- 基準日トグル --}}
+            $('#ref-mode-today').on('click', function () {
+                window.location.href = '{{ route('leave') }}?fiscal_year={{ $selectedFY }}&ref_mode=today';
+            });
+            $('#ref-mode-fy-end').on('click', function () {
+                window.location.href = '{{ route('leave') }}?fiscal_year={{ $selectedFY }}&ref_mode=fy_end';
             });
 
             {{-- モーダル制御 --}}
@@ -145,10 +153,10 @@
             </div>
             @endif
 
-            {{-- 年度セレクタ + アクションボタン --}}
+            {{-- 年度セレクタ + 基準日トグル + アクションボタン --}}
             <div class="mb-4">
                 <div class="flex flex-wrap items-end -mx-3">
-                    <div class="w-full md:w-1/6 px-3 mb-3 md:mb-0">
+                    <div class="w-full md:w-auto px-3 mb-3 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="fiscal-year-select">
                             年度 <span class="normal-case font-normal">（{{ $startMonth }}月〜翌{{ $startMonth > 1 ? $startMonth - 1 : 12 }}月）</span>
                         </label>
@@ -157,6 +165,19 @@
                             <option value="{{ $fy }}" {{ $fy == $selectedFY ? 'selected' : '' }}>{{ $fy }}年度</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="px-3 mb-3 md:mb-0">
+                        <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2">基準日</label>
+                        <div class="inline-flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600">
+                            <button type="button" id="ref-mode-today"
+                                class="px-3 py-[7px] text-xs font-medium transition-colors {{ $refMode === 'today' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600' }}">
+                                今日現在
+                            </button>
+                            <button type="button" id="ref-mode-fy-end"
+                                class="px-3 py-[7px] text-xs font-medium border-l border-gray-300 dark:border-gray-600 transition-colors {{ $refMode === 'fy_end' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600' }}">
+                                年度末
+                            </button>
+                        </div>
                     </div>
                     <div class="flex-1 px-3 flex flex-wrap gap-2 justify-end self-end">
                         <button type="button" id="btn-add-usage" class="btn-blue !mb-0">
@@ -174,11 +195,14 @@
                 {{-- 有休カード --}}
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg {{ $showExpiredStock ? 'md:col-span-2' : '' }}">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900">
-                                <i class="fas fa-umbrella-beach text-blue-600 dark:text-blue-400 text-xs"></i>
-                            </span>
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">有休</h3>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900">
+                                    <i class="fas fa-umbrella-beach text-blue-600 dark:text-blue-400 text-xs"></i>
+                                </span>
+                                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">有休</h3>
+                            </div>
+                            <span class="text-[10px] text-gray-400 dark:text-gray-500">{{ $referenceDate->format('Y/m/d') }} 現在</span>
                         </div>
                     </div>
                     <div class="px-3 py-2">
@@ -207,11 +231,14 @@
                 {{-- 年次休暇カード --}}
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col {{ $showExpiredStock ? 'md:col-span-2' : '' }}">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900">
-                                <i class="fas fa-calendar-day text-green-600 dark:text-green-400 text-xs"></i>
-                            </span>
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">年次休暇</h3>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900">
+                                    <i class="fas fa-calendar-day text-green-600 dark:text-green-400 text-xs"></i>
+                                </span>
+                                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">年次休暇</h3>
+                            </div>
+                            <span class="text-[10px] text-gray-400 dark:text-gray-500">{{ $referenceDate->format('Y/m/d') }} 現在</span>
                         </div>
                     </div>
                     <div class="px-3 py-2 flex-1 flex flex-col">
@@ -233,11 +260,14 @@
                 {{-- 代休カード --}}
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900">
-                                <i class="fas fa-exchange-alt text-purple-600 dark:text-purple-400 text-xs"></i>
-                            </span>
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">代休</h3>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900">
+                                    <i class="fas fa-exchange-alt text-purple-600 dark:text-purple-400 text-xs"></i>
+                                </span>
+                                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">代休</h3>
+                            </div>
+                            <span class="text-[10px] text-gray-400 dark:text-gray-500">{{ $referenceDate->format('Y/m/d') }} 現在</span>
                         </div>
                     </div>
                     <div class="px-3 py-2 flex-1 flex flex-col">
@@ -260,11 +290,14 @@
                 @if($showExpiredStock)
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <div class="flex items-center gap-2">
-                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900">
-                                <i class="fas fa-archive text-amber-600 dark:text-amber-400 text-xs"></i>
-                            </span>
-                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">失効累積</h3>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900">
+                                    <i class="fas fa-archive text-amber-600 dark:text-amber-400 text-xs"></i>
+                                </span>
+                                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">失効累積</h3>
+                            </div>
+                            <span class="text-[10px] text-gray-400 dark:text-gray-500">{{ $referenceDate->format('Y/m/d') }} 現在</span>
                         </div>
                     </div>
                     <div class="px-3 py-2 flex-1 flex flex-col">
@@ -325,8 +358,15 @@
                                     <span class="text-xs text-yellow-600 dark:text-yellow-400">●</span>
                                     @endif
                                 </td>
-                                <td class="py-3 px-2 text-center border-r border-blue-200 dark:border-blue-800 {{ $month['paid_used'] > 0 ? 'text-blue-600 dark:text-blue-400 font-medium' : '' }}">
-                                    {{ $month['paid_used'] > 0 ? number_format($month['paid_used'], 1) : '-' }}
+                                @php $paidCounted = $month['paid_used'] - $month['paid_future']; @endphp
+                                <td class="py-3 px-2 text-center border-r border-blue-200 dark:border-blue-800 {{ $paidCounted > 0 ? 'text-blue-600 dark:text-blue-400 font-medium' : '' }}">
+                                    @if($month['paid_future'] > 0)
+                                        {{ number_format($paidCounted, 1) }} <span class="text-gray-400 dark:text-gray-500 font-normal text-[10px]">({{ number_format($month['paid_future'], 1) }})</span>
+                                    @elseif($paidCounted > 0)
+                                        {{ number_format($paidCounted, 1) }}
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                                 <td class="py-3 px-2 text-center text-xs text-gray-500 dark:text-gray-400 border-r border-blue-200 dark:border-blue-800">
                                     {{ $month['paid_prev_fy_remaining'] > 0 ? number_format($month['paid_prev_fy_remaining'], 1) : '-' }}
@@ -337,14 +377,28 @@
                                 <td class="py-3 px-2 text-center font-medium text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">
                                     {{ number_format($month['paid_remaining'], 1) }}
                                 </td>
-                                <td class="py-3 px-2 text-center border-r border-green-200 dark:border-green-800 {{ $month['annual_used'] > 0 ? 'text-green-600 dark:text-green-400 font-medium' : '' }}">
-                                    {{ $month['annual_used'] > 0 ? number_format($month['annual_used'], 1) : '-' }}
+                                @php $annualCounted = $month['annual_used'] - $month['annual_future']; @endphp
+                                <td class="py-3 px-2 text-center border-r border-green-200 dark:border-green-800 {{ $annualCounted > 0 ? 'text-green-600 dark:text-green-400 font-medium' : '' }}">
+                                    @if($month['annual_future'] > 0)
+                                        {{ number_format($annualCounted, 1) }} <span class="text-gray-400 dark:text-gray-500 font-normal text-[10px]">({{ number_format($month['annual_future'], 1) }})</span>
+                                    @elseif($annualCounted > 0)
+                                        {{ number_format($annualCounted, 1) }}
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                                 <td class="py-3 px-2 text-center text-gray-700 dark:text-gray-300 border-r border-gray-300 dark:border-gray-600">
                                     {{ number_format($month['annual_remaining'], 1) }}
                                 </td>
-                                <td class="py-3 px-2 text-center border-r border-purple-200 dark:border-purple-800 {{ $month['comp_used'] > 0 ? 'text-purple-600 dark:text-purple-400 font-medium' : '' }}">
-                                    {{ $month['comp_used'] > 0 ? number_format($month['comp_used'], 1) : '-' }}
+                                @php $compCounted = $month['comp_used'] - $month['comp_future']; @endphp
+                                <td class="py-3 px-2 text-center border-r border-purple-200 dark:border-purple-800 {{ $compCounted > 0 ? 'text-purple-600 dark:text-purple-400 font-medium' : '' }}">
+                                    @if($month['comp_future'] > 0)
+                                        {{ number_format($compCounted, 1) }} <span class="text-gray-400 dark:text-gray-500 font-normal text-[10px]">({{ number_format($month['comp_future'], 1) }})</span>
+                                    @elseif($compCounted > 0)
+                                        {{ number_format($compCounted, 1) }}
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                                 <td class="py-3 px-2 text-center text-gray-700 dark:text-gray-300">
                                     {{ number_format($month['comp_remaining'], 1) }}

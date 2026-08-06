@@ -186,9 +186,9 @@ class LeaveService
      * 有休の残数を計算（使用日時点で有効な付与から期限順に消費）
      * 基準日（年度末 or 今日）までの使用・付与で計算する
      */
-    public function calculatePaidLeaveBalance(int $userId, int $fiscalYear, int $startMonth): array
+    public function calculatePaidLeaveBalance(int $userId, int $fiscalYear, int $startMonth, ?Carbon $refDate = null): array
     {
-        $refDate = $this->getReferenceDate($fiscalYear, $startMonth);
+        $refDate = $refDate ?? $this->getReferenceDate($fiscalYear, $startMonth);
 
         // 基準日までに有効になった有休付与を期限順に取得
         $grants = LeaveGrant::where('user_id', $userId)
@@ -286,15 +286,25 @@ class LeaveService
     /**
      * 年次休暇の残数を計算
      */
-    public function calculateAnnualLeaveBalance(int $userId, int $fiscalYear): array
+    public function calculateAnnualLeaveBalance(int $userId, int $fiscalYear, int $startMonth = 0, ?Carbon $refDate = null): array
     {
         $totalGrant = LeaveGrant::where('user_id', $userId)
             ->where('leave_type', self::TYPE_ANNUAL)
             ->where('fiscal_year', $fiscalYear)
             ->sum('grant_days');
 
-        // 年次休暇の使用は usage_date が年度内のものを集計
-        $totalUsage = $this->getUsageForFiscalYear($userId, self::TYPE_ANNUAL, $fiscalYear, 0, 0);
+        if ($refDate !== null && $startMonth > 0) {
+            // 基準日が指定された場合: 年度開始日〜基準日の使用を集計
+            $fyStart = $this->getFiscalYearStartDate($fiscalYear, $startMonth);
+            $totalUsage = (float) LeaveUsage::where('user_id', $userId)
+                ->where('leave_type', self::TYPE_ANNUAL)
+                ->where('usage_date', '>=', $fyStart)
+                ->where('usage_date', '<=', $refDate)
+                ->sum('days');
+        } else {
+            // 従来動作: 年度全体の使用を集計
+            $totalUsage = $this->getUsageForFiscalYear($userId, self::TYPE_ANNUAL, $fiscalYear, 0, 0);
+        }
 
         return [
             'fiscal_year' => $fiscalYear,
@@ -308,9 +318,9 @@ class LeaveService
      * 代休の残数を計算
      * 代休は期限なしだが、基準日までの付与・使用で計算する
      */
-    public function calculateCompensatoryBalance(int $userId, int $fiscalYear, int $startMonth): array
+    public function calculateCompensatoryBalance(int $userId, int $fiscalYear, int $startMonth, ?Carbon $refDate = null): array
     {
-        $refDate = $this->getReferenceDate($fiscalYear, $startMonth);
+        $refDate = $refDate ?? $this->getReferenceDate($fiscalYear, $startMonth);
 
         $totalGrant = LeaveGrant::where('user_id', $userId)
             ->where('leave_type', self::TYPE_COMPENSATORY)
@@ -333,9 +343,9 @@ class LeaveService
      * 失効累積（有休の失効分ストック）を計算
      * calculatePaidLeaveBalance の detail を再利用し、基準日時点で期限切れの未消費分を合計。
      */
-    public function calculateExpiredStock(int $userId, int $fiscalYear, int $startMonth, array $paidBalanceDetail): array
+    public function calculateExpiredStock(int $userId, int $fiscalYear, int $startMonth, array $paidBalanceDetail, ?Carbon $refDate = null): array
     {
-        $refDate = $this->getReferenceDate($fiscalYear, $startMonth);
+        $refDate = $refDate ?? $this->getReferenceDate($fiscalYear, $startMonth);
 
         $expiredDays = 0;
         foreach ($paidBalanceDetail as $d) {
@@ -360,7 +370,7 @@ class LeaveService
     /**
      * 月別使用集計を取得
      */
-    public function getMonthlyReport(int $userId, int $fiscalYear, int $startMonth): array
+    public function getMonthlyReport(int $userId, int $fiscalYear, int $startMonth, ?Carbon $refDate = null): array
     {
         $fyStart = $this->getFiscalYearStartDate($fiscalYear, $startMonth);
         $fyEnd = $this->getFiscalYearEndDate($fiscalYear, $startMonth);
@@ -383,6 +393,9 @@ class LeaveService
                 'paid' => 0,
                 'annual' => 0,
                 'compensatory' => 0,
+                'paid_future' => 0,
+                'annual_future' => 0,
+                'compensatory_future' => 0,
             ];
             $cursor->addMonth();
         }
@@ -391,6 +404,13 @@ class LeaveService
             $key = $usage->usage_date->format('Y-m');
             if (isset($months[$key])) {
                 $months[$key][$usage->leave_type] += (float) $usage->days;
+                // 基準日より後の使用を未加算分として追跡
+                if ($refDate !== null && $usage->usage_date->gt($refDate)) {
+                    $futureKey = $usage->leave_type . '_future';
+                    if (isset($months[$key][$futureKey])) {
+                        $months[$key][$futureKey] += (float) $usage->days;
+                    }
+                }
             }
         }
 
@@ -458,11 +478,14 @@ class LeaveService
                 'year' => $month['year'],
                 'month' => $month['month'],
                 'paid_used' => $month['paid'],
+                'paid_future' => $month['paid_future'],
                 'paid_prev_fy_remaining' => round($prevFYRunning, 1),
                 'paid_remaining' => round($paidRunning, 1),
                 'annual_used' => $month['annual'],
+                'annual_future' => $month['annual_future'],
                 'annual_remaining' => round($annualRunning, 1),
                 'comp_used' => $month['compensatory'],
+                'comp_future' => $month['compensatory_future'],
                 'comp_remaining' => round($compRunning, 1),
             ];
         }
