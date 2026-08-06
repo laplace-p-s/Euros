@@ -37,10 +37,16 @@ class LeaveController extends Controller
             $autoGrantNeeded = $this->leaveService->checkAutoGrantNeeded($userId, $settings);
         }
 
-        // 各種残数計算
+        // 各種残数計算（全て選択年度基準）
         $paidBalance = $this->leaveService->calculatePaidLeaveBalance($userId, $selectedFY, $startMonth);
         $annualBalance = $this->leaveService->calculateAnnualLeaveBalance($userId, $selectedFY);
-        $compBalance = $this->leaveService->calculateCompensatoryBalance($userId);
+        $compBalance = $this->leaveService->calculateCompensatoryBalance($userId, $selectedFY, $startMonth);
+
+        // 失効累積（paidBalance の detail を再利用）
+        $showExpiredStock = $settings->show_expired_stock;
+        $expiredStock = $showExpiredStock
+            ? $this->leaveService->calculateExpiredStock($userId, $selectedFY, $startMonth, $paidBalance['detail'])
+            : null;
 
         // 月別レポート
         $monthlyReport = $this->leaveService->getMonthlyReport($userId, $selectedFY, $startMonth);
@@ -57,6 +63,7 @@ class LeaveController extends Controller
         $param = compact(
             'settings', 'selectedFY', 'currentFY', 'startMonth',
             'autoGrantNeeded', 'paidBalance', 'annualBalance', 'compBalance',
+            'showExpiredStock', 'expiredStock',
             'monthlyReport', 'usageHistory', 'grantHistory', 'fiscalYears'
         );
 
@@ -100,7 +107,7 @@ class LeaveController extends Controller
     public function addUsage(Request $request)
     {
         $request->validate([
-            'leave_type' => 'required|in:paid,annual,compensatory',
+            'leave_type' => 'required|in:paid,annual,compensatory,expired_stock',
             'usage_date' => 'required|date',
             'days' => 'required|numeric|in:0.5,1',
             'note' => 'nullable|string|max:100',

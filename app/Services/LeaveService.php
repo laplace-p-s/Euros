@@ -13,11 +13,13 @@ class LeaveService
     const TYPE_PAID = 'paid';             // 有休
     const TYPE_ANNUAL = 'annual';         // 年次休暇
     const TYPE_COMPENSATORY = 'compensatory'; // 代休
+    const TYPE_EXPIRED_STOCK = 'expired_stock'; // 失効累積
 
     const TYPE_LABELS = [
         self::TYPE_PAID => '有休',
         self::TYPE_ANNUAL => '年次休暇',
         self::TYPE_COMPENSATORY => '代休',
+        self::TYPE_EXPIRED_STOCK => '失効累積',
     ];
 
     /**
@@ -170,53 +172,80 @@ class LeaveService
     }
 
     /**
-     * 有休の残数を計算（期限順消費）
-     * 今年度付与分・昨年度付与分をそれぞれ返す
+     * 選択年度の基準日を返す
+     * 過去年度 → 年度末、現在・未来年度 → 今日
+     */
+    public function getReferenceDate(int $fiscalYear, int $startMonth): Carbon
+    {
+        $today = Carbon::today();
+        $fyEnd = $this->getFiscalYearEndDate($fiscalYear, $startMonth);
+        return $today->lt($fyEnd) ? $today : $fyEnd;
+    }
+
+    /**
+     * 有休の残数を計算（使用日時点で有効な付与から期限順に消費）
+     * 基準日（年度末 or 今日）までの使用・付与で計算する
      */
     public function calculatePaidLeaveBalance(int $userId, int $fiscalYear, int $startMonth): array
     {
-        $today = Carbon::today();
+        $refDate = $this->getReferenceDate($fiscalYear, $startMonth);
 
-        // 有効な有休付与を期限順に取得（期限切れ含む全データ）
+        // 基準日までに有効になった有休付与を期限順に取得
         $grants = LeaveGrant::where('user_id', $userId)
             ->where('leave_type', self::TYPE_PAID)
             ->whereNotNull('expiry_date')
+            ->where('effective_date', '<=', $refDate)
             ->orderBy('expiry_date', 'asc')
             ->get();
 
-        // 有効期限が現在年度終了以降のもの（まだ有効なもの）をフィルタ
-        $activeGrants = $grants->filter(function ($grant) use ($today) {
-            return $grant->expiry_date >= $today;
-        });
-
-        // 全有休使用合計（有効な付与に対する消費を計算するため、全期間）
-        // 消費は期限順なので、期限の早い付与から順に使用を差し引く
-        $totalUsage = LeaveUsage::where('user_id', $userId)
-            ->where('leave_type', self::TYPE_PAID)
-            ->sum('days');
-
-        $remainingUsage = (float) $totalUsage;
-        $balanceByGrant = [];
-
+        // 付与ごとの残数を初期化
+        $grantRemaining = [];
         foreach ($grants as $grant) {
-            $grantDays = (float) $grant->grant_days;
-            $consumed = min($remainingUsage, $grantDays);
-            $remaining = $grantDays - $consumed;
-            $remainingUsage -= $consumed;
+            $grantRemaining[$grant->id] = (float) $grant->grant_days;
+        }
 
-            // 期限切れなら残はゼロ
-            if ($grant->expiry_date < $today) {
+        // 基準日までの有休使用を日付順に取得
+        $usages = LeaveUsage::where('user_id', $userId)
+            ->where('leave_type', self::TYPE_PAID)
+            ->where('usage_date', '<=', $refDate)
+            ->orderBy('usage_date', 'asc')
+            ->get();
+
+        // 各使用を、使用日時点で有効かつ期限の早い付与から消費
+        foreach ($usages as $usage) {
+            $usageDays = (float) $usage->days;
+            $usageDate = $usage->usage_date;
+
+            foreach ($grants as $grant) {
+                if ($usageDays <= 0) break;
+                if ($grant->expiry_date < $usageDate) continue;
+                if ($grantRemaining[$grant->id] <= 0) continue;
+
+                $consume = min($usageDays, $grantRemaining[$grant->id]);
+                $grantRemaining[$grant->id] -= $consume;
+                $usageDays -= $consume;
+            }
+        }
+
+        // 付与別の結果を構築
+        $balanceByGrant = [];
+        foreach ($grants as $grant) {
+            $remaining = $grantRemaining[$grant->id];
+            $isExpired = $grant->expiry_date < $refDate;
+
+            // 基準日時点で期限切れなら残はゼロ
+            if ($isExpired) {
                 $remaining = 0;
             }
 
             $balanceByGrant[] = [
                 'grant_id' => $grant->id,
                 'fiscal_year' => $grant->fiscal_year,
-                'grant_days' => $grantDays,
-                'consumed' => $consumed,
+                'grant_days' => (float) $grant->grant_days,
+                'consumed' => (float) $grant->grant_days - $grantRemaining[$grant->id],
                 'remaining' => $remaining,
                 'expiry_date' => $grant->expiry_date,
-                'is_expired' => $grant->expiry_date < $today,
+                'is_expired' => $isExpired,
             ];
         }
 
@@ -277,22 +306,54 @@ class LeaveService
 
     /**
      * 代休の残数を計算
-     * 代休は期限なしなので、全付与 - 全使用
+     * 代休は期限なしだが、基準日までの付与・使用で計算する
      */
-    public function calculateCompensatoryBalance(int $userId): array
+    public function calculateCompensatoryBalance(int $userId, int $fiscalYear, int $startMonth): array
     {
+        $refDate = $this->getReferenceDate($fiscalYear, $startMonth);
+
         $totalGrant = LeaveGrant::where('user_id', $userId)
             ->where('leave_type', self::TYPE_COMPENSATORY)
+            ->where('effective_date', '<=', $refDate)
             ->sum('grant_days');
 
         $totalUsage = LeaveUsage::where('user_id', $userId)
             ->where('leave_type', self::TYPE_COMPENSATORY)
+            ->where('usage_date', '<=', $refDate)
             ->sum('days');
 
         return [
             'grant_days' => (float) $totalGrant,
             'used_days' => (float) $totalUsage,
             'remaining' => (float) $totalGrant - (float) $totalUsage,
+        ];
+    }
+
+    /**
+     * 失効累積（有休の失効分ストック）を計算
+     * calculatePaidLeaveBalance の detail を再利用し、基準日時点で期限切れの未消費分を合計。
+     */
+    public function calculateExpiredStock(int $userId, int $fiscalYear, int $startMonth, array $paidBalanceDetail): array
+    {
+        $refDate = $this->getReferenceDate($fiscalYear, $startMonth);
+
+        $expiredDays = 0;
+        foreach ($paidBalanceDetail as $d) {
+            if ($d['is_expired']) {
+                $expiredDays += ($d['grant_days'] - $d['consumed']);
+            }
+        }
+
+        // 基準日までの失効累積使用分を差し引く
+        $expiredStockUsage = (float) LeaveUsage::where('user_id', $userId)
+            ->where('leave_type', self::TYPE_EXPIRED_STOCK)
+            ->where('usage_date', '<=', $refDate)
+            ->sum('days');
+
+        return [
+            'expired_days' => $expiredDays,
+            'used_days' => $expiredStockUsage,
+            'remaining' => $expiredDays - $expiredStockUsage,
         ];
     }
 
@@ -358,7 +419,7 @@ class LeaveService
         $annualRunning = $annualBalance['grant_days'];
 
         // 代休
-        $compBalance = $this->calculateCompensatoryBalance($userId);
+        $compBalance = $this->calculateCompensatoryBalance($userId, $fiscalYear, $startMonth);
         // 代休は期限なしなので、年度開始時点の残を起点に
         $priorCompUsage = LeaveUsage::where('user_id', $userId)
             ->where('leave_type', self::TYPE_COMPENSATORY)

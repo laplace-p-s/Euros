@@ -76,6 +76,21 @@
 
                         <div class="mb-6">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+                                <i class="fas fa-archive"></i>&nbsp;失効累積設定
+                            </h3>
+                            <div class="mb-4">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="hidden" name="show_expired_stock" value="0">
+                                    <input type="checkbox" name="show_expired_stock" value="1" class="sr-only peer" {{ $settings->show_expired_stock ? 'checked' : '' }}>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
+                                    <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">失効累積を表示</span>
+                                </label>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">有休の失効分をストックとして累積表示し、特別時に使用できるようにします</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
                                 <i class="fas fa-calendar-day"></i>&nbsp;年次休暇設定
                             </h3>
                             <div class="mb-4">

@@ -15,6 +15,7 @@ class LeaveSetting extends Model
         'paid_leave_auto_grant',
         'paid_leave_grant_days',
         'annual_leave_grant_days',
+        'show_expired_stock',
         'auto_grant_dismissed_fy',
     ];
 
@@ -22,6 +23,7 @@ class LeaveSetting extends Model
         'paid_leave_auto_grant' => 'boolean',
         'paid_leave_grant_days' => 'decimal:1',
         'annual_leave_grant_days' => 'decimal:1',
+        'show_expired_stock' => 'boolean',
     ];
 
     public function user()

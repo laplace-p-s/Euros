@@ -121,6 +121,7 @@ class SettingsController extends Controller
             'fiscal_year_start_month' => 'required|integer|min:1|max:12',
             'paid_leave_auto_grant' => 'required|boolean',
             'paid_leave_grant_days' => 'required|numeric|min:0',
+            'show_expired_stock' => 'required|boolean',
             'annual_leave_grant_days' => 'required|numeric|min:0',
         ]);
 
@@ -129,6 +130,7 @@ class SettingsController extends Controller
         $settings->fiscal_year_start_month = $request->input('fiscal_year_start_month');
         $settings->paid_leave_auto_grant = $request->input('paid_leave_auto_grant');
         $settings->paid_leave_grant_days = $request->input('paid_leave_grant_days');
+        $settings->show_expired_stock = $request->input('show_expired_stock');
         $settings->annual_leave_grant_days = $request->input('annual_leave_grant_days');
         $settings->save();
 

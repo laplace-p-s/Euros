@@ -175,9 +175,9 @@
             </div>
 
             {{-- サマリーカード --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-1 {{ $showExpiredStock ? 'md:grid-cols-6' : 'md:grid-cols-3' }} gap-4 mb-4">
                 {{-- 有休カード --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg {{ $showExpiredStock ? 'md:col-span-2' : '' }}">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2">
                             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900">
@@ -194,15 +194,15 @@
                             <div class="flex justify-between text-gray-600 dark:text-gray-400">
                                 <span>今年度付与 ({{ $paidBalance['current_fy']['fiscal_year'] }})</span>
                                 <span>
-                                    <span class="text-gray-400">{{ number_format($paidBalance['current_fy']['grant_days'], 1) }}付与 /</span>
                                     残 <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($paidBalance['current_fy']['remaining'], 1) }}</span>
+                                    <span class="text-gray-400">/ {{ number_format($paidBalance['current_fy']['grant_days'], 1) }}</span>
                                 </span>
                             </div>
                             <div class="flex justify-between text-gray-600 dark:text-gray-400">
                                 <span>昨年度付与 ({{ $paidBalance['prev_fy']['fiscal_year'] }})</span>
                                 <span>
-                                    <span class="text-gray-400">{{ number_format($paidBalance['prev_fy']['grant_days'], 1) }}付与 /</span>
                                     残 <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($paidBalance['prev_fy']['remaining'], 1) }}</span>
+                                    <span class="text-gray-400">/ {{ number_format($paidBalance['prev_fy']['grant_days'], 1) }}</span>
                                 </span>
                             </div>
                         </div>
@@ -210,7 +210,7 @@
                 </div>
 
                 {{-- 年次休暇カード --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col {{ $showExpiredStock ? 'md:col-span-2' : '' }}">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2">
                             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-green-100 dark:bg-green-900">
@@ -219,25 +219,24 @@
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">年次休暇</h3>
                         </div>
                     </div>
-                    <div class="px-3 py-2">
+                    <div class="px-3 py-2 flex-1 flex flex-col">
                         <div class="text-2xl font-bold text-green-600 dark:text-green-400 mb-1.5">
                             {{ number_format($annualBalance['remaining'], 1) }}<span class="text-xs font-normal text-gray-500 dark:text-gray-400"> 日</span>
                         </div>
-                        <div class="space-y-0.5 text-xs">
+                        <div class="mt-auto space-y-0.5 text-xs">
                             <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                                <span>付与</span>
-                                <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($annualBalance['grant_days'], 1) }}日</span>
-                            </div>
-                            <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                                <span>使用</span>
-                                <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($annualBalance['used_days'], 1) }}日</span>
+                                <span>残 / 付与</span>
+                                <span>
+                                    残 <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($annualBalance['remaining'], 1) }}</span>
+                                    <span class="text-gray-400">/ {{ number_format($annualBalance['grant_days'], 1) }}</span>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {{-- 代休カード --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center gap-2">
                             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900">
@@ -246,22 +245,46 @@
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">代休</h3>
                         </div>
                     </div>
-                    <div class="px-3 py-2">
+                    <div class="px-3 py-2 flex-1 flex flex-col">
                         <div class="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-1.5">
                             {{ number_format($compBalance['remaining'], 1) }}<span class="text-xs font-normal text-gray-500 dark:text-gray-400"> 日</span>
                         </div>
-                        <div class="space-y-0.5 text-xs">
+                        <div class="mt-auto space-y-0.5 text-xs">
                             <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                                <span>付与</span>
-                                <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($compBalance['grant_days'], 1) }}日</span>
-                            </div>
-                            <div class="flex justify-between text-gray-600 dark:text-gray-400">
-                                <span>使用</span>
-                                <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($compBalance['used_days'], 1) }}日</span>
+                                <span>残 / 付与</span>
+                                <span>
+                                    残 <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($compBalance['remaining'], 1) }}</span>
+                                    <span class="text-gray-400">/ {{ number_format($compBalance['grant_days'], 1) }}</span>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {{-- 失効累積カード --}}
+                @if($showExpiredStock)
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
+                    <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-900">
+                                <i class="fas fa-archive text-amber-600 dark:text-amber-400 text-xs"></i>
+                            </span>
+                            <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">失効累積</h3>
+                        </div>
+                    </div>
+                    <div class="px-3 py-2 flex-1 flex flex-col">
+                        <div class="text-2xl font-bold text-amber-600 dark:text-amber-400 mb-1.5">
+                            {{ number_format($expiredStock['remaining'], 1) }}<span class="text-xs font-normal text-gray-500 dark:text-gray-400"> 日</span>
+                        </div>
+                        <div class="mt-auto space-y-0.5 text-xs">
+                            <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                                <span>失効合計</span>
+                                <span class="font-medium text-gray-800 dark:text-gray-200">{{ number_format($expiredStock['expired_days'], 1) }}日</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
 
             {{-- 月別一覧 --}}
@@ -369,6 +392,8 @@
                                     <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">{{ $usage['type_label'] }}</span>
                                     @elseif($usage['leave_type'] === 'annual')
                                     <span class="text-xs font-medium px-2 py-0.5 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">{{ $usage['type_label'] }}</span>
+                                    @elseif($usage['leave_type'] === 'expired_stock')
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300">{{ $usage['type_label'] }}</span>
                                     @else
                                     <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">{{ $usage['type_label'] }}</span>
                                     @endif
@@ -471,6 +496,9 @@
                             <option value="paid">有休</option>
                             <option value="annual">年次休暇</option>
                             <option value="compensatory">代休</option>
+                            @if($showExpiredStock)
+                            <option value="expired_stock">失効累積</option>
+                            @endif
                         </select>
                     </div>
                     <div>
