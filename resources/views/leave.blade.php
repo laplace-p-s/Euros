@@ -60,7 +60,7 @@
                 window.location.href = '{{ route('leave') }}?fiscal_year=' + fy + '&ref_mode={{ $refMode }}';
             });
 
-            {{-- 基準日トグル --}}
+            {{-- 基準日トグル（Cookieで記憶） --}}
             $('#ref-mode-today').on('click', function () {
                 window.location.href = '{{ route('leave') }}?fiscal_year={{ $selectedFY }}&ref_mode=today';
             });

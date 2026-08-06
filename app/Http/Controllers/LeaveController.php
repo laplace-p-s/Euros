@@ -38,7 +38,15 @@ class LeaveController extends Controller
         }
 
         // 基準日モード（today: 今日現在 / fy_end: 年度末）
-        $refMode = $request->input('ref_mode', 'today');
+        // URLパラメータ → Cookie → デフォルト(today) の優先順で決定
+        $cookieName = "leave_ref_mode_{$userId}";
+        if ($request->has('ref_mode')) {
+            $refMode = $request->input('ref_mode');
+        } else {
+            $refMode = $request->cookie($cookieName, 'today');
+        }
+        $refMode = in_array($refMode, ['today', 'fy_end']) ? $refMode : 'today';
+
         $fyEndDate = $this->leaveService->getFiscalYearEndDate($selectedFY, $startMonth);
         if ($refMode === 'fy_end') {
             $referenceDate = $fyEndDate;
@@ -77,7 +85,10 @@ class LeaveController extends Controller
             'monthlyReport', 'usageHistory', 'grantHistory', 'fiscalYears'
         );
 
-        return view('leave', $param);
+        // 基準日モードをCookieに保存（1年間有効）
+        return response()
+            ->view('leave', $param)
+            ->cookie($cookieName, $refMode, 60 * 24 * 365);
     }
 
     /**
