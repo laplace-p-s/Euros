@@ -44,7 +44,7 @@ $ php artisan migrate
 ## Technologies Used
 - Language: PHP 8.0,8.1,8.2,8.3
 - Framework: Laravel 10.48.29
-- Library: tailwindCSS 3.1.0, jQuery 3.6.3
+- Library: tailwindCSS 3.1.0, jQuery 3.6.3, Tabler Icons 3.46.0
 
 ## Contributing
 - [Code of conduct](./CODE_OF_CONDUCT.md)
