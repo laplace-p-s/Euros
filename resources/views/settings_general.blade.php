@@ -19,12 +19,12 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-blue-700 dark:text-blue-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
                         <span class="sr-only">Close</span>
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <i aria-hidden="true" class="ti ti-x text-xl"></i>
                     </button>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 
                         <div class="mb-6">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                                <i class="fas fa-calendar-alt"></i>&nbsp;年度設定
+                                <i class="ti ti-calendar text-base"></i>&nbsp;年度設定
                             </h3>
                             <div class="mb-4">
                                 <label for="fiscal_year_start_month" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">年度開始月</label>
@@ -51,7 +51,7 @@
 
                         <div class="mb-6">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                                <i class="fas fa-umbrella-beach"></i>&nbsp;有休設定
+                                <i class="ti ti-beach text-base"></i>&nbsp;有休設定
                             </h3>
                             <div class="mb-4">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -71,7 +71,7 @@
 
                         <div class="mb-6">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                                <i class="fas fa-archive"></i>&nbsp;失効累積設定
+                                <i class="ti ti-archive text-base"></i>&nbsp;失効累積設定
                             </h3>
                             <div class="mb-4">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -86,7 +86,7 @@
 
                         <div class="mb-6">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                                <i class="fas fa-exchange-alt"></i>&nbsp;代休設定
+                                <i class="ti ti-arrows-exchange text-base"></i>&nbsp;代休設定
                             </h3>
                             <div class="mb-4">
                                 <label class="relative inline-flex items-center cursor-pointer">
@@ -110,7 +110,7 @@
 
                         <div class="mb-6">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
-                                <i class="fas fa-calendar-day"></i>&nbsp;年次休暇設定
+                                <i class="ti ti-calendar-event text-base"></i>&nbsp;年次休暇設定
                             </h3>
                             <div class="mb-4">
                                 <label for="annual_leave_grant_days" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">年次休暇付与日数</label>
@@ -121,7 +121,7 @@
 
                         <div class="flex justify-end">
                             <button type="submit" class="btn-blue">
-                                <i class="fas fa-save"></i>&nbsp;保存
+                                <i class="ti ti-device-floppy text-base"></i>&nbsp;保存
                             </button>
                         </div>
                     </form>

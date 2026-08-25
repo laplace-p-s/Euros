@@ -103,12 +103,12 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-blue-700 dark:text-blue-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
                         <span class="sr-only">Close</span>
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <i aria-hidden="true" class="ti ti-x text-xl"></i>
                     </button>
                 </div>
             </div>
@@ -129,11 +129,11 @@
                     </div>
                     <div class="flex-1 px-3 flex flex-wrap gap-2 justify-end self-end">
                         <button type="button" id="btn-add-holiday" class="btn-blue !mb-0">
-                            <i class="fas fa-plus"></i>&nbsp;追加
+                            <i class="ti ti-plus"></i>&nbsp;追加
                         </button>
                         @if($has_template)
                         <button type="button" id="btn-template" class="btn-alternative-green !mb-0">
-                            <i class="fas fa-calendar-plus"></i>&nbsp;テンプレートから追加
+                            <i class="ti ti-calendar-plus"></i>&nbsp;テンプレートから追加
                         </button>
                         @endif
                     </div>
@@ -144,7 +144,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        <i class="fas fa-calendar-check"></i>&nbsp;{{ $selected_year }}年 祝祭日一覧
+                        <i class="ti ti-calendar-check"></i>&nbsp;{{ $selected_year }}年 祝祭日一覧
                         <span id="holiday-count" class="text-xs font-normal text-gray-400 ml-1">{{ count($result_list) }}</span>
                         <span class="text-xs font-normal text-gray-400">件</span>
                     </h3>
@@ -175,7 +175,7 @@
                                 <td class="py-4 px-6">
                                     <button class="delete_hol btn_show btn-purple-to-blue-b group">
                                         <span class="btn-purple-to-blue-s">
-                                            <i class="fas fa-trash"></i>&nbsp;削除
+                                            <i class="ti ti-trash"></i>&nbsp;削除
                                         </span>
                                     </button>
                                 </td>
@@ -198,7 +198,7 @@
             <div class="flex items-center justify-between p-4 border-b dark:border-gray-700">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">祝祭日を追加</h3>
                 <button id="close-add-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                    <i class="ti ti-x text-xl"></i>
                 </button>
             </div>
             <form method="POST" action="{{ route('settings.holiday_add') }}">
@@ -235,7 +235,7 @@
                     <span id="template-count" class="text-sm font-normal text-gray-400 ml-2"></span>
                 </h3>
                 <button id="close-template-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                    <i class="ti ti-x text-xl"></i>
                 </button>
             </div>
             <div class="p-4 overflow-y-auto flex-1 min-h-0">
@@ -244,10 +244,7 @@
                     <br><span class="text-xs text-yellow-600 dark:text-yellow-400">※データは重複追加されます。必要に応じて削除を行ってください。</span>
                 </p>
                 <div id="template-loading" class="flex justify-center py-8" style="display:none;">
-                    <svg class="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                    </svg>
+                    <i class="ti ti-loader-2 animate-spin text-2xl text-blue-600"></i>
                 </div>
                 <div class="rounded border border-gray-200 dark:border-gray-700">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -268,7 +265,7 @@
                     @csrf
                     <input type="hidden" name="year" value="{{ $selected_year }}">
                     <button type="submit" id="btn-template-confirm" class="btn-blue" style="display:none;">
-                        <i class="fas fa-check"></i>&nbsp;追加する
+                        <i class="ti ti-check"></i>&nbsp;追加する
                     </button>
                 </form>
             </div>

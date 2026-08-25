@@ -67,14 +67,14 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5 text-blue-700 dark:text-blue-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text">
                         登録が完了しました。
                     </div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
                         <span class="sr-only">Close</span>
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <i aria-hidden="true" class="ti ti-x text-xl"></i>
                     </button>
                 </div>
             </div>
@@ -119,9 +119,9 @@
                     <div class="p-6 text-gray-900">
                         <span class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_disp'] }} サマリ</span><br>
                         <span class="text-xs text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_announce'] }} 現在</span><br>
-                        <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['last_month_y'], 'summary_m'=>$summary_info['last_month_m']]) }}"><i class="fas fa-arrow-left"></i>&nbsp;前月</a></span>
+                        <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['last_month_y'], 'summary_m'=>$summary_info['last_month_m']]) }}"><i class="ti ti-arrow-left"></i>&nbsp;前月</a></span>
                         @if($summary_info['is_display_next'])
-                        <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['next_month_y'], 'summary_m'=>$summary_info['next_month_m']]) }}">翌月&nbsp;<i class="fas fa-arrow-right"></i></a></span>
+                        <span class="text-blue-600 underline"><a href="{{ route('home', ['summary_y' => $summary_info['next_month_y'], 'summary_m'=>$summary_info['next_month_m']]) }}">翌月&nbsp;<i class="ti ti-arrow-right"></i></a></span>
                         @endif
                     </div>
                     <div class="relative overflow-x-auto">
@@ -147,13 +147,13 @@
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg sm:w-1/2">
                     <div class="px-5 pt-4 pb-2 flex items-center justify-between">
                         <span class="font-medium text-gray-900 dark:text-white">{{ $leaveSummary['currentFY'] }}年度 休暇残数</span>
-                        <a href="{{ route('leave') }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline"><i class="fas fa-arrow-right"></i>&nbsp;詳細</a>
+                        <a href="{{ route('leave') }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline"><i class="ti ti-arrow-right"></i>&nbsp;詳細</a>
                     </div>
                     <div class="px-5 pb-4 space-y-3">
                         {{-- 有休 --}}
                         <div class="flex items-center gap-3">
                             <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex-shrink-0">
-                                <i class="fas fa-umbrella-beach text-blue-600 dark:text-blue-400 text-xs"></i>
+                                <i class="ti ti-beach text-blue-600 dark:text-blue-400 text-xl"></i>
                             </span>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-baseline justify-between">
@@ -170,7 +170,7 @@
                         {{-- 年次休暇 --}}
                         <div class="flex items-center gap-3">
                             <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 flex-shrink-0">
-                                <i class="fas fa-calendar-day text-green-600 dark:text-green-400 text-xs"></i>
+                                <i class="ti ti-calendar-event text-green-600 dark:text-green-400 text-xl"></i>
                             </span>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-baseline justify-between">

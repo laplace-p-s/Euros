@@ -169,16 +169,16 @@
                             </div>
                         </div>
                         <div class="flex flex-row-reverse">
-                            <button type="submit" class="btn-blue" name="action" value="search"><i class="fas fa-search"></i>&nbsp;検索</button>
-                            <button type="submit" class="btn-blue !mr-auto" name="action" value="next">翌月へ&nbsp;<i class="fas fa-angle-right"></i></button>
-                            <button type="submit" class="btn-blue" name="action" value="back"><i class="fas fa-angle-left"></i>&nbsp;前月へ</button>
+                            <button type="submit" class="btn-blue" name="action" value="search"><i class="ti ti-search"></i>&nbsp;検索</button>
+                            <button type="submit" class="btn-blue !mr-auto" name="action" value="next">翌月へ&nbsp;<i class="ti ti-chevron-right"></i></button>
+                            <button type="submit" class="btn-blue" name="action" value="back"><i class="ti ti-chevron-left"></i>&nbsp;前月へ</button>
                         </div>
                         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
                         <div class="">
                             <textarea id="copy-area" style="display: none"></textarea>
-                            <button type="button" class="copy btn-alternative"><i class="fas fa-copy"></i>&nbsp;コピー</button>
-                            <button type="button" class="copy_min btn-alternative-green"><i class="fas fa-copy"></i>&nbsp;出退勤のみコピー</button>
-                            <button type="button" class="copy_full btn-alternative-red"><i class="fas fa-copy"></i>&nbsp;メモ含めフルコピー</button>
+                            <button type="button" class="copy btn-alternative"><i class="ti ti-copy"></i>&nbsp;コピー</button>
+                            <button type="button" class="copy_min btn-alternative-green"><i class="ti ti-copy"></i>&nbsp;出退勤のみコピー</button>
+                            <button type="button" class="copy_full btn-alternative-red"><i class="ti ti-copy"></i>&nbsp;メモ含めフルコピー</button>
                             <span class="copy_mes text-xs text-gray-700 dark:text-gray-400 hidden">クリップボードにコピーしました！</span>
                         </div>
                     </form>
@@ -248,17 +248,17 @@
                                     <td class="py-4 px-6">
                                         <button class="btn_show btn-purple-to-blue-b group">
                                             <span class="edit_memo btn-purple-to-blue-s">
-                                                <i class="fas fa-edit text-sm"></i>&nbsp;メモ編集
+                                                <i class="ti ti-edit text-sm"></i>&nbsp;メモ編集
                                             </span>
                                         </button>
                                         <button class="btn_detail btn-cyan-to-blue-b group">
                                             <span class="row_detail btn-cyan-to-blue-s">
-                                                <i class="fas fa-info-circle text-sm"></i>&nbsp;詳細
+                                                <i class="ti ti-info-circle text-sm"></i>&nbsp;詳細
                                             </span>
                                         </button>
                                         <span class="btn_edit hidden">
-                                            <button type="button" class="edit_submit btn-green-g mr-2"><i class="fas fa-check"></i>&nbsp;確定</button>
-                                            <button type="button" class="edit_cancel btn-red-g"><i class="fas fa-undo"></i>&nbsp;取消</button>
+                                            <button type="button" class="edit_submit btn-green-g mr-2"><i class="ti ti-check"></i>&nbsp;確定</button>
+                                            <button type="button" class="edit_cancel btn-red-g"><i class="ti ti-arrow-back-up"></i>&nbsp;取消</button>
                                         </span>
                                     </td>
                                 </tr>
