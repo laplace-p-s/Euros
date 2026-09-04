@@ -23,6 +23,29 @@
             });
             return ret_text;
         }
+        function create_seq_copy_text() {
+            var ret_text = '';
+            var seq = 0;
+            $('.transit_table_body').find('tr.record-row').each(function () {
+                seq = seq + 1;
+                var tmp_text = '';
+                tmp_text = tmp_text + $(this).find('td.tsv_date').data('date') + '\t';
+                tmp_text = tmp_text + seq + '\t';
+                tmp_text = tmp_text + $(this).find('td.tsv_label').text().trim();
+                ret_text = ret_text + tmp_text + '\n';
+            });
+            return ret_text;
+        }
+        function copy_to_clipboard(text) {
+            var $textarea = $('#copy-area');
+            $textarea.text(text);
+            $textarea.show();
+            $textarea.select();
+            document.execCommand('copy');
+            $textarea.hide();
+            {{-- navigator.clipboardはHTTPS環境でのみ動作 --}}
+            $('.copy_mes').show();
+        }
         function apply_destination(select) {
             var opt = $(select).find('option:selected');
             $('#record-route').val(opt.data('route'));
@@ -93,15 +116,10 @@
 
             {{-- TSVコピー --}}
             $('.copy').on('click', function () {
-                var text = create_copy_text();
-                var $textarea = $('#copy-area');
-                $textarea.text(text);
-                $textarea.show();
-                $textarea.select();
-                document.execCommand('copy');
-                $textarea.hide();
-                {{-- navigator.clipboardはHTTPS環境でのみ動作 --}}
-                $('.copy_mes').show();
+                copy_to_clipboard(create_copy_text());
+            });
+            $('.copy_seq').on('click', function () {
+                copy_to_clipboard(create_seq_copy_text());
             });
 
             {{-- セッションメッセージの表示 --}}
@@ -191,8 +209,9 @@
                 </h3>
                 <div class="flex items-center">
                     <textarea id="copy-area" style="display: none"></textarea>
-                    <button type="button" class="copy btn-alternative !mr-2 !mb-0"><i class="ti ti-copy"></i>&nbsp;コピー</button>
-                    <span class="copy_mes text-xs text-gray-700 dark:text-gray-400 hidden">クリップボードにコピーしました！</span>
+                    <span class="copy_mes text-xs text-gray-700 dark:text-gray-400 hidden mr-2">クリップボードにコピーしました！</span>
+                    <button type="button" class="copy btn-alternative !mr-2 !mb-0" title="日付・行き先・経路・金額・備考をコピー"><i class="ti ti-copy"></i>&nbsp;コピー</button>
+                    <button type="button" class="copy_seq btn-alternative-green !mr-0 !mb-0" title="日付・連番・行き先をコピー"><i class="ti ti-list-numbers"></i>&nbsp;連番コピー</button>
                 </div>
             </div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4 border border-gray-300 dark:border-gray-500">
