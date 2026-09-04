@@ -28,6 +28,13 @@
             $('#record-route').val(opt.data('route'));
             $('#record-amount').val(opt.data('amount'));
         }
+        function reset_record_modal() {
+            $('#record-modal-title').text('交通費を登録');
+            $('#record-use-date').val('{{ $defaultDate }}');
+            $('#record-destination-select').prop('selectedIndex', 0);
+            apply_destination($('#record-destination-select'));
+            $('#record-note').val('');
+        }
         $(function () {
             {{-- アラート閉じる --}}
             $('#alert-btn').on('click', function () {
@@ -59,6 +66,22 @@
 
             {{-- 明細登録モーダル --}}
             $('#btn-add-record').on('click', function () {
+                reset_record_modal();
+                $('#modal-add-record').removeClass('hidden');
+            });
+
+            {{-- 明細の複製（登録モーダルに既存の値を呼び出す） --}}
+            $('.duplicate-record').on('click', function () {
+                var destinationId = String($(this).data('destination-id') || '');
+                $('#record-modal-title').text('交通費を登録（複製）');
+                $('#record-use-date').val($(this).data('date'));
+                {{-- 行き先が削除済みの場合は選択を変更しない --}}
+                if (destinationId !== '' && $('#record-destination-select option[value="' + destinationId + '"]').length) {
+                    $('#record-destination-select').val(destinationId);
+                }
+                $('#record-route').val($(this).data('route'));
+                $('#record-amount').val($(this).data('amount'));
+                $('#record-note').val($(this).data('note'));
                 $('#modal-add-record').removeClass('hidden');
             });
             $('#record-destination-select').on('change', function () {
@@ -201,7 +224,15 @@
                                 <td class="tsv_route py-3 px-4 text-xs">{{ $record['route'] ?? '' }}</td>
                                 <td class="tsv_amount py-3 px-4 text-right font-medium text-gray-900 dark:text-white whitespace-nowrap" data-amount="{{ $record['amount'] }}">{{ number_format($record['amount']) }}円</td>
                                 <td class="tsv_note py-3 px-4">{{ $record['note'] ?? '' }}</td>
-                                <td class="py-3 px-4">
+                                <td class="py-3 px-4 whitespace-nowrap">
+                                    <button class="duplicate-record btn-green-g mr-2"
+                                        data-date="{{ $record['use_date_raw'] }}"
+                                        data-destination-id="{{ $record['destination_id'] }}"
+                                        data-route="{{ $record['route'] }}"
+                                        data-amount="{{ $record['amount'] }}"
+                                        data-note="{{ $record['note'] }}">
+                                        <i class="ti ti-copy"></i>&nbsp;複製
+                                    </button>
                                     <button class="delete-record btn-red-g" data-id="{{ $record['id'] }}">
                                         <i class="ti ti-trash"></i>&nbsp;削除
                                     </button>
@@ -233,7 +264,7 @@
     <div id="modal-add-record" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-4">
             <div class="flex items-center justify-between p-4 border-b dark:border-gray-700">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">交通費を登録</h3>
+                <h3 id="record-modal-title" class="text-lg font-semibold text-gray-900 dark:text-white">交通費を登録</h3>
                 <button id="close-record-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                     <i class="ti ti-x text-xl"></i>
                 </button>
@@ -244,7 +275,7 @@
                 <div class="p-4 space-y-4">
                     <div>
                         <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">利用日</label>
-                        <input type="date" name="use_date" value="{{ $defaultDate }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                        <input type="date" id="record-use-date" name="use_date" value="{{ $defaultDate }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
                     </div>
                     <div>
                         <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">行き先</label>
@@ -266,7 +297,7 @@
                     </div>
                     <div>
                         <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">備考</label>
-                        <input type="text" name="note" maxlength="100" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="任意">
+                        <input type="text" id="record-note" name="note" maxlength="100" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="任意">
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700">

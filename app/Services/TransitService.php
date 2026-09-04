@@ -56,6 +56,7 @@ class TransitService
                 'route' => $record->route,
                 'amount' => $record->amount,
                 'note' => $record->note,
+                'destination_id' => $record->destination_id,
             ];
         }
         return $ret;
