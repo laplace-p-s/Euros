@@ -25,6 +25,10 @@
                     <button type="button" onclick="location.href='{{ route('leave') }}'" class="!mr-0 !mb-0 btn-blue w-36"><i class="ti ti-beach text-base"></i>&nbsp;{{ __('Paid Leave') }}</button>
                     <span class="mt-1 ml-2 text-sm text-gray-600 dark:text-gray-400">有休・年次休暇・代休の使用履歴を管理</span>
                 </div>
+                <div class="p-4 text-gray-900">
+                    <button type="button" onclick="location.href='{{ route('transit') }}'" class="!mr-0 !mb-0 btn-blue w-36"><i class="ti ti-train text-base"></i>&nbsp;{{ __('Transit Expense') }}</button>
+                    <span class="mt-1 ml-2 text-sm text-gray-600 dark:text-gray-400">月ごとの交通費を明細で管理</span>
+                </div>
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('tools')" :active="request()->routeIs('tools') || request()->routeIs('leave*')">
+                    <x-nav-link :href="route('tools')" :active="request()->routeIs('tools') || request()->routeIs('leave*') || request()->routeIs('transit*')">
                         <i class="ti ti-tools text-base"></i>&nbsp;{{ __('Tools') }}
                     </x-nav-link>
                 </div>
@@ -100,7 +100,7 @@
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('tools')" :active="request()->routeIs('tools') || request()->routeIs('leave*')">
+            <x-responsive-nav-link :href="route('tools')" :active="request()->routeIs('tools') || request()->routeIs('leave*') || request()->routeIs('transit*')">
                 <i class="ti ti-tools"></i>&nbsp;{{ __('Tools') }}
             </x-responsive-nav-link>
         </div>

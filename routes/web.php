@@ -7,6 +7,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ToolsController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\TransitController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +56,15 @@ Route::post('/leave/usage', [LeaveController::class, 'addUsage'])->middleware(['
 Route::post('/leave/usage/delete', [LeaveController::class, 'deleteUsage'])->middleware(['auth', 'verified'])->name('leave.usage.delete');
 Route::post('/leave/grant', [LeaveController::class, 'addGrant'])->middleware(['auth', 'verified'])->name('leave.grant.add');
 Route::post('/leave/grant/delete', [LeaveController::class, 'deleteGrant'])->middleware(['auth', 'verified'])->name('leave.grant.delete');
+
+//交通費管理
+Route::get('/transit', [TransitController::class, 'index'])->middleware(['auth', 'verified'])->name('transit');
+Route::post('/transit/record', [TransitController::class, 'addRecord'])->middleware(['auth', 'verified'])->name('transit.record.add');
+Route::post('/transit/record/delete', [TransitController::class, 'deleteRecord'])->middleware(['auth', 'verified'])->name('transit.record.delete');
+Route::get('/transit/destination', [TransitController::class, 'destinationIndex'])->middleware(['auth', 'verified'])->name('transit.destination');
+Route::post('/transit/destination', [TransitController::class, 'addDestination'])->middleware(['auth', 'verified'])->name('transit.destination.add');
+Route::post('/transit/destination/update', [TransitController::class, 'updateDestination'])->middleware(['auth', 'verified'])->name('transit.destination.update');
+Route::post('/transit/destination/delete', [TransitController::class, 'deleteDestination'])->middleware(['auth', 'verified'])->name('transit.destination.delete');
 
 //API
 Route::post('/register_rec', [ApiController::class, 'register'])->middleware(['auth', 'verified'])->name('register_rec');
