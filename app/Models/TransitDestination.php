@@ -14,10 +14,12 @@ class TransitDestination extends Model
         'label',
         'route',
         'amount',
+        'sort_order',
     ];
 
     protected $casts = [
         'amount' => 'integer',
+        'sort_order' => 'integer',
     ];
 
     public function user()

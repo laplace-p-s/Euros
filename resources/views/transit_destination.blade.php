@@ -10,6 +10,16 @@
                 }
             });
         }
+        function move_destination(id, direction) {
+            return $.ajax({
+                type: 'POST',
+                url: '{{ route('transit.destination.move') }}',
+                data: { destination_id: id, direction: direction },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }
+            });
+        }
         $(function () {
             {{-- アラート閉じる --}}
             $('#alert-btn').on('click', function () {
@@ -26,6 +36,18 @@
                         alert('削除に失敗しました');
                     });
                 }
+            });
+
+            {{-- 並び替え --}}
+            $('.move-destination').on('click', function () {
+                var $btn = $(this);
+                $btn.prop('disabled', true);
+                move_destination($btn.data('id'), $btn.data('direction')).done(function () {
+                    location.reload();
+                }).fail(function () {
+                    $btn.prop('disabled', false);
+                    alert('並び替えに失敗しました');
+                });
             });
 
             {{-- 追加/編集モーダル --}}
@@ -86,20 +108,21 @@
             </div>
 
             {{-- 行き先一覧 --}}
+            <div class="mb-2 flex flex-wrap items-center justify-between gap-2">
+                <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    <i class="ti ti-map-pin"></i>&nbsp;行き先
+                    <span class="text-xs font-normal text-gray-400 ml-1">({{ count($destinations) }}件)</span>
+                </h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    ここで登録した行き先が交通費登録の選択肢になります（この並び順で表示されます）
+                </p>
+            </div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4 border border-gray-300 dark:border-gray-500">
-                <div class="p-4 border-b border-gray-300 dark:border-gray-500">
-                    <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        <i class="ti ti-map-pin"></i>&nbsp;行き先
-                        <span class="text-xs font-normal text-gray-400 ml-1">({{ count($destinations) }}件)</span>
-                    </h3>
-                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        ここで登録した行き先が、交通費登録の選択肢になります。往復する場合は「自宅→本社」「本社→自宅」のように行きと帰りを別々に登録してください。
-                    </p>
-                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300 border-b border-gray-300 dark:border-gray-500">
                             <tr>
+                                <th scope="col" class="py-3 px-4">並び</th>
                                 <th scope="col" class="py-3 px-4">行き先</th>
                                 <th scope="col" class="py-3 px-4">経路</th>
                                 <th scope="col" class="py-3 px-4 text-right">金額</th>
@@ -107,12 +130,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($destinations as $destination)
+                            @forelse($destinations as $index => $destination)
                             <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="py-3 px-4 whitespace-nowrap">
+                                    @if($index > 0)
+                                    <button class="move-destination btn-alternative !mr-1 !mb-0 !py-1.5 !px-2" data-id="{{ $destination->id }}" data-direction="up" title="上へ">
+                                        <i class="ti ti-arrow-up"></i>
+                                    </button>
+                                    @else
+                                    <button class="btn-disabled !mr-1 !mb-0 !py-1.5 !px-2" disabled><i class="ti ti-arrow-up"></i></button>
+                                    @endif
+                                    @if($index < count($destinations) - 1)
+                                    <button class="move-destination btn-alternative !mr-0 !mb-0 !py-1.5 !px-2" data-id="{{ $destination->id }}" data-direction="down" title="下へ">
+                                        <i class="ti ti-arrow-down"></i>
+                                    </button>
+                                    @else
+                                    <button class="btn-disabled !mr-0 !mb-0 !py-1.5 !px-2" disabled><i class="ti ti-arrow-down"></i></button>
+                                    @endif
+                                </td>
                                 <td class="py-3 px-4 font-medium text-gray-900 dark:text-white">{{ $destination->label }}</td>
                                 <td class="py-3 px-4 text-xs">{{ $destination->route }}</td>
                                 <td class="py-3 px-4 text-right whitespace-nowrap">{{ number_format($destination->amount) }}円</td>
-                                <td class="py-3 px-4">
+                                <td class="py-3 px-4 whitespace-nowrap">
                                     <button class="edit-destination btn-green-g mr-2" data-id="{{ $destination->id }}" data-label="{{ $destination->label }}" data-route="{{ $destination->route }}" data-amount="{{ $destination->amount }}">
                                         <i class="ti ti-edit"></i>&nbsp;編集
                                     </button>
@@ -123,7 +162,7 @@
                             </tr>
                             @empty
                             <tr class="bg-white dark:bg-gray-800">
-                                <td colspan="4" class="py-4 px-4 text-center text-gray-400">行き先は登録されていません</td>
+                                <td colspan="5" class="py-4 px-4 text-center text-gray-400">行き先は登録されていません</td>
                             </tr>
                             @endforelse
                         </tbody>

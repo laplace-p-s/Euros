@@ -24,11 +24,12 @@ class TransitService
     }
 
     /**
-     * 行き先テンプレート一覧
+     * 行き先一覧
      */
     public function getDestinations(int $userId)
     {
         return TransitDestination::where('user_id', $userId)
+            ->orderBy('sort_order')
             ->orderBy('id')
             ->get();
     }

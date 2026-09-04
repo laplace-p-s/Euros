@@ -64,6 +64,7 @@ Route::post('/transit/record/delete', [TransitController::class, 'deleteRecord']
 Route::get('/transit/destination', [TransitController::class, 'destinationIndex'])->middleware(['auth', 'verified'])->name('transit.destination');
 Route::post('/transit/destination', [TransitController::class, 'addDestination'])->middleware(['auth', 'verified'])->name('transit.destination.add');
 Route::post('/transit/destination/update', [TransitController::class, 'updateDestination'])->middleware(['auth', 'verified'])->name('transit.destination.update');
+Route::post('/transit/destination/move', [TransitController::class, 'moveDestination'])->middleware(['auth', 'verified'])->name('transit.destination.move');
 Route::post('/transit/destination/delete', [TransitController::class, 'deleteDestination'])->middleware(['auth', 'verified'])->name('transit.destination.delete');
 
 //API

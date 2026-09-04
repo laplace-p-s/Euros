@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\TransitDestination;
 use App\Models\TransitRecord;
 use App\Services\TransitService;
@@ -131,11 +132,15 @@ class TransitController extends Controller
             'amount' => 'required|integer|min:0|max:1000000',
         ]);
 
+        $userId = Auth::id();
+        $maxOrder = TransitDestination::where('user_id', $userId)->max('sort_order');
+
         TransitDestination::create([
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'label' => $request->input('label'),
             'route' => $request->input('route'),
             'amount' => $request->input('amount'),
+            'sort_order' => ($maxOrder ?? 0) + 1,
         ]);
 
         return redirect()->route('transit.destination')
@@ -167,6 +172,46 @@ class TransitController extends Controller
 
         return redirect()->route('transit.destination')
             ->with('message', '行き先を更新しました');
+    }
+
+    /**
+     * 行き先の並び替え（隣の行と入れ替え）
+     */
+    public function moveDestination(Request $request)
+    {
+        $request->validate([
+            'destination_id' => 'required|integer',
+            'direction' => 'required|in:up,down',
+        ]);
+
+        $userId = Auth::id();
+        $destinations = $this->transitService->getDestinations($userId);
+        $index = $destinations->search(function ($item) use ($request) {
+            return $item->id == $request->input('destination_id');
+        });
+
+        if ($index === false) {
+            return response()->json(['status' => 'error', 'message' => '対象が見つかりません'], 404);
+        }
+
+        $swapIndex = $request->input('direction') === 'up' ? $index - 1 : $index + 1;
+        if ($swapIndex < 0 || $swapIndex >= $destinations->count()) {
+            return response()->json(['status' => 'ok']); // 端なので移動しない
+        }
+
+        // 入れ替えたうえで並び順を振り直す（同値・欠番があっても整う）
+        $ids = $destinations->pluck('id')->all();
+        [$ids[$index], $ids[$swapIndex]] = [$ids[$swapIndex], $ids[$index]];
+
+        DB::transaction(function () use ($ids, $userId) {
+            foreach ($ids as $i => $id) {
+                TransitDestination::where('id', $id)
+                    ->where('user_id', $userId)
+                    ->update(['sort_order' => $i + 1]);
+            }
+        });
+
+        return response()->json(['status' => 'ok']);
     }
 
     /**
