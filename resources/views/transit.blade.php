@@ -247,11 +247,13 @@
                     </div>
                     <div class="mt-3 flex flex-wrap gap-2">
                         @foreach($pinnedDestinations as $destination)
-                        <button type="submit" name="destination_id" value="{{ $destination->id }}" class="quick-record btn-alternative !mr-0 !mb-0 !py-2 !px-3 inline-flex items-center gap-2 text-left">
-                            <i class="ti ti-plus text-blue-600 dark:text-blue-400"></i>
-                            <span class="inline-flex flex-col leading-tight">
-                                <span class="font-medium text-gray-900 dark:text-gray-200">{{ $destination->label }}</span>
-                                <span class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $destination->route }}（{{ number_format($destination->amount) }}円）</span>
+                        <button type="submit" name="destination_id" value="{{ $destination->id }}" class="quick-record btn-purple-to-blue-b group">
+                            <span class="btn-purple-to-blue-s inline-flex items-center gap-2 text-left !px-3 !py-2">
+                                <i class="ti ti-plus text-base"></i>
+                                <span class="inline-flex flex-col leading-tight">
+                                    <span class="text-sm font-medium">{{ $destination->label }}</span>
+                                    <span class="mt-0.5 text-xs opacity-75">{{ $destination->route }}（{{ number_format($destination->amount) }}円）</span>
+                                </span>
                             </span>
                         </button>
                         @endforeach
