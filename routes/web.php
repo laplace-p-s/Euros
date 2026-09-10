@@ -60,6 +60,7 @@ Route::post('/leave/grant/delete', [LeaveController::class, 'deleteGrant'])->mid
 //交通費管理
 Route::get('/transit', [TransitController::class, 'index'])->middleware(['auth', 'verified'])->name('transit');
 Route::post('/transit/record', [TransitController::class, 'addRecord'])->middleware(['auth', 'verified'])->name('transit.record.add');
+Route::post('/transit/record/update', [TransitController::class, 'updateRecord'])->middleware(['auth', 'verified'])->name('transit.record.update');
 Route::post('/transit/record/quick', [TransitController::class, 'quickAddRecord'])->middleware(['auth', 'verified'])->name('transit.record.quick');
 Route::post('/transit/record/delete', [TransitController::class, 'deleteRecord'])->middleware(['auth', 'verified'])->name('transit.record.delete');
 Route::get('/transit/destination', [TransitController::class, 'destinationIndex'])->middleware(['auth', 'verified'])->name('transit.destination');

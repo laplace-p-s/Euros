@@ -101,6 +101,56 @@ class TransitController extends Controller
     }
 
     /**
+     * 交通費の更新
+     *
+     * 明細はid順で並ぶため、レコードを作り直さず更新することで
+     * 日付を変えない限り一覧での表示位置は変わらない。
+     */
+    public function updateRecord(Request $request)
+    {
+        $request->validate([
+            'record_id' => 'required|integer',
+            'use_date' => 'required|date',
+            'destination_id' => 'required|integer',
+            'route' => 'required|string|max:100',
+            'amount' => 'required|integer|min:0|max:1000000',
+            'note' => 'nullable|string|max:100',
+        ]);
+
+        $userId = Auth::id();
+
+        $record = TransitRecord::where('id', $request->input('record_id'))
+            ->where('user_id', $userId)
+            ->first();
+
+        if (is_null($record)) {
+            return redirect()->route('transit', ['month' => $request->input('month')])
+                ->with('message', '対象が見つかりません');
+        }
+
+        // 行き先は自分が登録したものに限る
+        $destination = TransitDestination::where('id', $request->input('destination_id'))
+            ->where('user_id', $userId)
+            ->first();
+
+        if (is_null($destination)) {
+            return redirect()->route('transit', ['month' => $request->input('month')])
+                ->with('message', '行き先が見つかりません');
+        }
+
+        $record->use_date = $request->input('use_date');
+        $record->label = $destination->label;
+        $record->route = $request->input('route');
+        $record->amount = $request->input('amount');
+        $record->note = $request->input('note');
+        $record->destination_id = $destination->id;
+        $record->save();
+
+        return redirect()->route('transit', ['month' => $request->input('month')])
+            ->with('message', '交通費を更新しました');
+    }
+
+    /**
      * 交通費のクイック登録（ピン留めした行き先を1クリックで登録）
      */
     public function quickAddRecord(Request $request)

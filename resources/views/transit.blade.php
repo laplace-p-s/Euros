@@ -53,10 +53,27 @@
         }
         function reset_record_modal() {
             $('#record-modal-title').text('交通費を登録');
+            $('#form-record').attr('action', '{{ route('transit.record.add') }}');
+            $('#record-submit').text('登録');
+            $('#record-id').val('');
             $('#record-use-date').val('{{ $defaultDate }}');
             $('#record-destination-select').prop('selectedIndex', 0);
             apply_destination($('#record-destination-select'));
             $('#record-note').val('');
+        }
+        function fill_record_modal($btn) {
+            var destinationId = String($btn.data('destination-id') || '');
+            $('#record-use-date').val($btn.data('date'));
+            {{-- 行き先が削除済みの場合は先頭の行き先を選ぶ --}}
+            if (destinationId !== '' && $('#record-destination-select option[value="' + destinationId + '"]').length) {
+                $('#record-destination-select').val(destinationId);
+            } else {
+                $('#record-destination-select').prop('selectedIndex', 0);
+            }
+            {{-- 経路・金額は行き先マスタではなく明細の値を引き継ぐ --}}
+            $('#record-route').val($btn.data('route'));
+            $('#record-amount').val($btn.data('amount'));
+            $('#record-note').val($btn.data('note'));
         }
         $(function () {
             {{-- アラート閉じる --}}
@@ -95,16 +112,20 @@
 
             {{-- 明細の複製（登録モーダルに既存の値を呼び出す） --}}
             $('.duplicate-record').on('click', function () {
-                var destinationId = String($(this).data('destination-id') || '');
+                reset_record_modal();
+                fill_record_modal($(this));
                 $('#record-modal-title').text('交通費を登録（複製）');
-                $('#record-use-date').val($(this).data('date'));
-                {{-- 行き先が削除済みの場合は選択を変更しない --}}
-                if (destinationId !== '' && $('#record-destination-select option[value="' + destinationId + '"]').length) {
-                    $('#record-destination-select').val(destinationId);
-                }
-                $('#record-route').val($(this).data('route'));
-                $('#record-amount').val($(this).data('amount'));
-                $('#record-note').val($(this).data('note'));
+                $('#modal-add-record').removeClass('hidden');
+            });
+
+            {{-- 明細の編集（同じモーダルを更新用に切り替える） --}}
+            $('.edit-record').on('click', function () {
+                reset_record_modal();
+                fill_record_modal($(this));
+                $('#record-modal-title').text('交通費を編集');
+                $('#form-record').attr('action', '{{ route('transit.record.update') }}');
+                $('#record-submit').text('更新');
+                $('#record-id').val($(this).data('id'));
                 $('#modal-add-record').removeClass('hidden');
             });
             $('#record-destination-select').on('change', function () {
@@ -285,18 +306,32 @@
                                 <td class="tsv_route py-3 px-4 text-xs">{{ $record['route'] ?? '' }}</td>
                                 <td class="tsv_amount py-3 px-4 text-right font-medium text-gray-900 dark:text-white whitespace-nowrap" data-amount="{{ $record['amount'] }}">{{ number_format($record['amount']) }}円</td>
                                 <td class="tsv_note py-3 px-4">{{ $record['note'] ?? '' }}</td>
-                                <td class="py-3 px-4 whitespace-nowrap">
-                                    <button class="duplicate-record btn-green-g mr-2"
+                                <td class="py-3 px-4 whitespace-nowrap text-right">
+                                    {{-- ラベルが開いても列幅が変わらないよう、展開後の幅を確保しておく --}}
+                                    <div class="inline-flex items-center justify-end w-44">
+                                    @if(count($destinations) > 0)
+                                    <button class="edit-record btn-blue-g btn-icon-label mr-2" title="編集"
+                                        data-id="{{ $record['id'] }}"
                                         data-date="{{ $record['use_date_raw'] }}"
                                         data-destination-id="{{ $record['destination_id'] }}"
                                         data-route="{{ $record['route'] }}"
                                         data-amount="{{ $record['amount'] }}"
                                         data-note="{{ $record['note'] }}">
-                                        <i class="ti ti-copy"></i>&nbsp;複製
+                                        <i class="ti ti-edit"></i><span class="btn-label">編集</span>
                                     </button>
-                                    <button class="delete-record btn-red-g" data-id="{{ $record['id'] }}">
-                                        <i class="ti ti-trash"></i>&nbsp;削除
+                                    <button class="duplicate-record btn-green-g btn-icon-label mr-2" title="複製"
+                                        data-date="{{ $record['use_date_raw'] }}"
+                                        data-destination-id="{{ $record['destination_id'] }}"
+                                        data-route="{{ $record['route'] }}"
+                                        data-amount="{{ $record['amount'] }}"
+                                        data-note="{{ $record['note'] }}">
+                                        <i class="ti ti-copy"></i><span class="btn-label">複製</span>
                                     </button>
+                                    @endif
+                                    <button class="delete-record btn-red-g btn-icon-label" title="削除" data-id="{{ $record['id'] }}">
+                                        <i class="ti ti-trash"></i><span class="btn-label">削除</span>
+                                    </button>
+                                    </div>
                                 </td>
                             </tr>
                             @empty
@@ -330,9 +365,10 @@
                     <i class="ti ti-x text-xl"></i>
                 </button>
             </div>
-            <form method="POST" action="{{ route('transit.record.add') }}">
+            <form id="form-record" method="POST" action="{{ route('transit.record.add') }}">
                 @csrf
                 <input type="hidden" name="month" value="{{ $selectedMonthValue }}">
+                <input type="hidden" id="record-id" name="record_id" value="">
                 <div class="p-4 space-y-4">
                     <div>
                         <label class="block mb-1 text-sm font-medium text-gray-900 dark:text-white">利用日</label>
@@ -363,7 +399,7 @@
                 </div>
                 <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700">
                     <button type="button" id="cancel-record-modal" class="btn-alternative !mr-0 !mb-0">キャンセル</button>
-                    <button type="submit" class="btn-blue !mr-0 !mb-0">登録</button>
+                    <button type="submit" id="record-submit" class="btn-blue !mr-0 !mb-0">登録</button>
                 </div>
             </form>
         </div>
