@@ -114,6 +114,13 @@
                 $('#modal-add-record').addClass('hidden');
             });
 
+            {{-- クイック登録の二重送信防止（値の送信後に無効化するため遅延させる） --}}
+            $('#form-quick-record').on('submit', function () {
+                setTimeout(function () {
+                    $('.quick-record').prop('disabled', true).addClass('opacity-50');
+                }, 0);
+            });
+
             {{-- TSVコピー --}}
             $('.copy').on('click', function () {
                 copy_to_clipboard(create_copy_text());
@@ -199,6 +206,41 @@
                     </div>
                 </div>
             </div>
+            @endif
+
+            {{-- クイック登録 --}}
+            @if(count($pinnedDestinations) > 0)
+            <form id="form-quick-record" method="POST" action="{{ route('transit.record.quick') }}" class="mb-4">
+                @csrf
+                <input type="hidden" name="month" value="{{ $selectedMonthValue }}">
+                <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-300 dark:border-gray-500 p-4">
+                    <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                        <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                            <i class="ti ti-pinned"></i>&nbsp;クイック登録
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <label for="quick-use-date" class="text-xs text-gray-500 dark:text-gray-400">利用日</label>
+                            <input type="date" id="quick-use-date" name="use_date" value="{{ $defaultDate }}" min="{{ $monthFirstDate }}" max="{{ $monthLastDate }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white" required>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 md:ml-auto">ボタンを押すと登録内容そのままで1件登録します</p>
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        @foreach($pinnedDestinations as $destination)
+                        <button type="submit" name="destination_id" value="{{ $destination->id }}" class="quick-record btn-alternative !mr-0 !mb-0 !py-2 !px-3 inline-flex items-center gap-2 text-left">
+                            <i class="ti ti-plus text-blue-600 dark:text-blue-400"></i>
+                            <span class="inline-flex flex-col leading-tight">
+                                <span class="font-medium text-gray-900 dark:text-gray-200">{{ $destination->label }}</span>
+                                <span class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{{ $destination->route }}（{{ number_format($destination->amount) }}円）</span>
+                            </span>
+                        </button>
+                        @endforeach
+                    </div>
+                </div>
+            </form>
+            @elseif(count($destinations) > 0)
+            <p class="mb-4 text-xs text-gray-500 dark:text-gray-400">
+                <i class="ti ti-pin"></i>&nbsp;よく使う行き先を<a href="{{ route('transit.destination') }}" class="underline">行き先の管理</a>でピン留めすると、ここから1クリックで登録できます
+            </p>
             @endif
 
             {{-- 明細一覧 --}}

@@ -35,6 +35,14 @@ class TransitService
     }
 
     /**
+     * ピン留めされた行き先一覧（クイック登録用）
+     */
+    public function getPinnedDestinations($destinations)
+    {
+        return $destinations->where('is_pinned', true)->values();
+    }
+
+    /**
      * 指定月の明細一覧（画面表示用に整形）
      */
     public function getRecords(int $userId, Carbon $month): array

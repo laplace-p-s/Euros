@@ -15,11 +15,13 @@ class TransitDestination extends Model
         'route',
         'amount',
         'sort_order',
+        'is_pinned',
     ];
 
     protected $casts = [
         'amount' => 'integer',
         'sort_order' => 'integer',
+        'is_pinned' => 'boolean',
     ];
 
     public function user()

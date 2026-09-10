@@ -60,10 +60,12 @@ Route::post('/leave/grant/delete', [LeaveController::class, 'deleteGrant'])->mid
 //交通費管理
 Route::get('/transit', [TransitController::class, 'index'])->middleware(['auth', 'verified'])->name('transit');
 Route::post('/transit/record', [TransitController::class, 'addRecord'])->middleware(['auth', 'verified'])->name('transit.record.add');
+Route::post('/transit/record/quick', [TransitController::class, 'quickAddRecord'])->middleware(['auth', 'verified'])->name('transit.record.quick');
 Route::post('/transit/record/delete', [TransitController::class, 'deleteRecord'])->middleware(['auth', 'verified'])->name('transit.record.delete');
 Route::get('/transit/destination', [TransitController::class, 'destinationIndex'])->middleware(['auth', 'verified'])->name('transit.destination');
 Route::post('/transit/destination', [TransitController::class, 'addDestination'])->middleware(['auth', 'verified'])->name('transit.destination.add');
 Route::post('/transit/destination/update', [TransitController::class, 'updateDestination'])->middleware(['auth', 'verified'])->name('transit.destination.update');
+Route::post('/transit/destination/pin', [TransitController::class, 'pinDestination'])->middleware(['auth', 'verified'])->name('transit.destination.pin');
 Route::post('/transit/destination/move', [TransitController::class, 'moveDestination'])->middleware(['auth', 'verified'])->name('transit.destination.move');
 Route::post('/transit/destination/delete', [TransitController::class, 'deleteDestination'])->middleware(['auth', 'verified'])->name('transit.destination.delete');
 

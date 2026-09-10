@@ -20,6 +20,16 @@
                 }
             });
         }
+        function pin_destination(id) {
+            return $.ajax({
+                type: 'POST',
+                url: '{{ route('transit.destination.pin') }}',
+                data: { destination_id: id },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                }
+            });
+        }
         $(function () {
             {{-- アラート閉じる --}}
             $('#alert-btn').on('click', function () {
@@ -47,6 +57,23 @@
                 }).fail(function () {
                     $btn.prop('disabled', false);
                     alert('並び替えに失敗しました');
+                });
+            });
+
+            {{-- ピン留め切り替え --}}
+            $('.pin-destination').on('click', function () {
+                var $btn = $(this);
+                $btn.prop('disabled', true);
+                pin_destination($btn.data('id')).done(function (res) {
+                    var pinned = res.is_pinned;
+                    $btn.toggleClass('btn-pin-on', pinned).toggleClass('btn-pin-off', !pinned);
+                    $btn.find('i').toggleClass('ti-pinned', pinned).toggleClass('ti-pin', !pinned);
+                    $btn.attr('title', pinned ? 'ピン留めを解除する' : 'クイック登録にピン留めする');
+                    $btn.closest('tr').toggleClass('row-pinned', pinned);
+                    $btn.prop('disabled', false);
+                }).fail(function () {
+                    $btn.prop('disabled', false);
+                    alert('ピン留めの変更に失敗しました');
                 });
             });
 
@@ -114,7 +141,8 @@
                     <span class="text-xs font-normal text-gray-400 ml-1">({{ count($destinations) }}件)</span>
                 </h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400">
-                    ここで登録した行き先が交通費登録の選択肢になります（この並び順で表示されます）
+                    ここで登録した行き先が交通費登録の選択肢になります（この並び順で表示されます）<br>
+                    ピン留めすると交通費管理画面のクイック登録に表示され、1クリックで登録できます
                 </p>
             </div>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4 border border-gray-300 dark:border-gray-500">
@@ -126,12 +154,13 @@
                                 <th scope="col" class="py-3 px-4">行き先</th>
                                 <th scope="col" class="py-3 px-4">経路</th>
                                 <th scope="col" class="py-3 px-4 text-right">金額</th>
+                                <th scope="col" class="py-3 px-4 text-center">ピン</th>
                                 <th scope="col" class="py-3 px-4"></th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($destinations as $index => $destination)
-                            <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 {{ $destination->is_pinned ? 'row-pinned' : '' }}">
                                 <td class="py-3 px-4 whitespace-nowrap">
                                     @if($index > 0)
                                     <button class="move-destination btn-alternative !mr-1 !mb-0 !py-1.5 !px-2" data-id="{{ $destination->id }}" data-direction="up" title="上へ">
@@ -151,6 +180,11 @@
                                 <td class="py-3 px-4 font-medium text-gray-900 dark:text-white">{{ $destination->label }}</td>
                                 <td class="py-3 px-4 text-xs">{{ $destination->route }}</td>
                                 <td class="py-3 px-4 text-right whitespace-nowrap">{{ number_format($destination->amount) }}円</td>
+                                <td class="py-3 px-4 text-center whitespace-nowrap">
+                                    <button class="pin-destination {{ $destination->is_pinned ? 'btn-pin-on' : 'btn-pin-off' }}" data-id="{{ $destination->id }}" title="{{ $destination->is_pinned ? 'ピン留めを解除する' : 'クイック登録にピン留めする' }}">
+                                        <i class="ti {{ $destination->is_pinned ? 'ti-pinned' : 'ti-pin' }}"></i>
+                                    </button>
+                                </td>
                                 <td class="py-3 px-4 whitespace-nowrap">
                                     <button class="edit-destination btn-green-g mr-2" data-id="{{ $destination->id }}" data-label="{{ $destination->label }}" data-route="{{ $destination->route }}" data-amount="{{ $destination->amount }}">
                                         <i class="ti ti-edit"></i>&nbsp;編集
@@ -162,7 +196,7 @@
                             </tr>
                             @empty
                             <tr class="bg-white dark:bg-gray-800">
-                                <td colspan="5" class="py-4 px-4 text-center text-gray-400">行き先は登録されていません</td>
+                                <td colspan="6" class="py-4 px-4 text-center text-gray-400">行き先は登録されていません</td>
                             </tr>
                             @endforelse
                         </tbody>

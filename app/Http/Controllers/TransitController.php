@@ -37,6 +37,7 @@ class TransitController extends Controller
         $records = $this->transitService->getRecords($userId, $selectedMonth);
         $total = $this->transitService->getTotal($records);
         $destinations = $this->transitService->getDestinations($userId);
+        $pinnedDestinations = $this->transitService->getPinnedDestinations($destinations);
         $monthList = $this->transitService->getMonthList($userId, $selectedMonth);
 
         // 登録モーダルの日付初期値（当月表示なら今日、それ以外は表示月の1日）
@@ -44,12 +45,17 @@ class TransitController extends Controller
             ? Carbon::now()->format('Y-m-d')
             : $selectedMonth->format('Y-m-d');
 
+        // クイック登録の日付は表示月の範囲内に限定する
+        $monthFirstDate = $selectedMonth->copy()->startOfMonth()->format('Y-m-d');
+        $monthLastDate = $selectedMonth->copy()->endOfMonth()->format('Y-m-d');
+
         $selectedMonthValue = $selectedMonth->format('Y-m');
         $selectedMonthLabel = $selectedMonth->format('Y年m月');
 
         $param = compact(
             'selectedMonthValue', 'selectedMonthLabel', 'monthList',
-            'records', 'total', 'destinations', 'defaultDate'
+            'records', 'total', 'destinations', 'pinnedDestinations',
+            'defaultDate', 'monthFirstDate', 'monthLastDate'
         );
 
         return view('transit', $param);
@@ -92,6 +98,44 @@ class TransitController extends Controller
 
         return redirect()->route('transit', ['month' => $request->input('month')])
             ->with('message', '交通費を登録しました');
+    }
+
+    /**
+     * 交通費のクイック登録（ピン留めした行き先を1クリックで登録）
+     */
+    public function quickAddRecord(Request $request)
+    {
+        $request->validate([
+            'use_date' => 'required|date',
+            'destination_id' => 'required|integer',
+        ]);
+
+        $userId = Auth::id();
+
+        // ピン留め中かつ自分が登録した行き先に限る
+        $destination = TransitDestination::where('id', $request->input('destination_id'))
+            ->where('user_id', $userId)
+            ->where('is_pinned', true)
+            ->first();
+
+        if (is_null($destination)) {
+            return redirect()->route('transit', ['month' => $request->input('month')])
+                ->with('message', '行き先が見つかりません');
+        }
+
+        // 経路・金額は行き先マスタの登録内容をそのまま使う
+        TransitRecord::create([
+            'user_id' => $userId,
+            'use_date' => $request->input('use_date'),
+            'label' => $destination->label,
+            'route' => $destination->route,
+            'amount' => $destination->amount,
+            'note' => null,
+            'destination_id' => $destination->id,
+        ]);
+
+        return redirect()->route('transit', ['month' => $request->input('month')])
+            ->with('message', '「' . $destination->label . '」を登録しました');
     }
 
     /**
@@ -212,6 +256,25 @@ class TransitController extends Controller
         });
 
         return response()->json(['status' => 'ok']);
+    }
+
+    /**
+     * 行き先のピン留め切り替え（クイック登録への表示/非表示）
+     */
+    public function pinDestination(Request $request)
+    {
+        $destination = TransitDestination::where('id', $request->input('destination_id'))
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if (is_null($destination)) {
+            return response()->json(['status' => 'error', 'message' => '対象が見つかりません'], 404);
+        }
+
+        $destination->is_pinned = !$destination->is_pinned;
+        $destination->save();
+
+        return response()->json(['status' => 'ok', 'is_pinned' => $destination->is_pinned]);
     }
 
     /**
