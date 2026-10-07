@@ -159,13 +159,21 @@
                                 <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="grid-year">
                                     年
                                 </label>
-                                {{ Form::select('year',$year_list,$selected_year,['class'=>'select-normal w-full','id'=>'grid-year']) }}
+                                <select class="select-normal w-full" id="grid-year" name="year">
+                                    @foreach ($year_list as $value => $label)
+                                        <option value="{{ $value }}" @selected((string) $value === (string) $selected_year)>{{ $label }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="w-full md:w-1/6 px-3">
                                 <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="grid-month">
                                     月
                                 </label>
-                                {{ Form::select('month',$month_list,$selected_month,['class'=>'select-normal w-full','id'=>'grid-month']) }}
+                                <select class="select-normal w-full" id="grid-month" name="month">
+                                    @foreach ($month_list as $value => $label)
+                                        <option value="{{ $value }}" @selected((string) $value === (string) $selected_month)>{{ $label }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="flex flex-row-reverse">
