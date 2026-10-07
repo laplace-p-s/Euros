@@ -33,7 +33,7 @@
             </form>
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
+                    <i aria-hidden="true" class="ti ti-info-circle shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
@@ -43,7 +43,7 @@
                 </div>
             </div>
             {{-- Infoエリア --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{--テーブル表示エリア--}}
                     <div class="relative overflow-x-auto">
@@ -177,7 +177,7 @@
     <div id="add_modal_bg" tabindex="-1" class="fixed bg-gray-900 opacity-30 w-screen h-screen z-10 top-0 left-0 right-0 hidden"></div>
     {{-- Modal area --}}
     {{-- Modal Contents --}}
-    <div id="add_modal" class="fixed z-20 top-0 left-0 right-0 mx-auto mt-32 w-3/4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg hidden">
+    <div id="add_modal" class="fixed z-20 top-0 left-0 right-0 mx-auto mt-32 w-3/4 bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg hidden">
         <div class="p-6 text-gray-900">
             <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">記録の手動追加</h3>
             <form method="post" action="{{route('detail.add_record')}}">

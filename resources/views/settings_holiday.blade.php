@@ -103,7 +103,7 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
+                    <i aria-hidden="true" class="ti ti-info-circle shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
@@ -128,11 +128,11 @@
                         </select>
                     </div>
                     <div class="flex-1 px-3 flex flex-wrap gap-2 justify-end self-end">
-                        <button type="button" id="btn-add-holiday" class="btn-blue !mb-0">
+                        <button type="button" id="btn-add-holiday" class="btn-blue mb-0!">
                             <i class="ti ti-plus"></i>&nbsp;追加
                         </button>
                         @if($has_template)
-                        <button type="button" id="btn-template" class="btn-alternative-green !mb-0">
+                        <button type="button" id="btn-template" class="btn-alternative-green mb-0!">
                             <i class="ti ti-calendar-plus"></i>&nbsp;テンプレートから追加
                         </button>
                         @endif
@@ -141,7 +141,7 @@
             </div>
 
             {{-- 一覧 --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg">
                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         <i class="ti ti-calendar-check"></i>&nbsp;{{ $selected_year }}年 祝祭日一覧
@@ -229,7 +229,7 @@
     {{-- テンプレート確認モーダル --}}
     <div id="modal-template" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 p-4">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg flex flex-col" style="max-height: calc(100vh - 2rem);">
-            <div class="flex items-center justify-between p-4 border-b dark:border-gray-700 flex-shrink-0">
+            <div class="flex items-center justify-between p-4 border-b dark:border-gray-700 shrink-0">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     テンプレートから追加
                     <span id="template-count" class="text-sm font-normal text-gray-400 ml-2"></span>
@@ -246,7 +246,7 @@
                 <div id="template-loading" class="flex justify-center py-8" style="display:none;">
                     <i class="ti ti-loader-2 animate-spin text-2xl text-blue-600"></i>
                 </div>
-                <div class="rounded border border-gray-200 dark:border-gray-700">
+                <div class="rounded-sm border border-gray-200 dark:border-gray-700">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
                             <tr>
@@ -259,7 +259,7 @@
                     </table>
                 </div>
             </div>
-            <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700 flex-shrink-0">
+            <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700 shrink-0">
                 <button type="button" id="cancel-template-modal" class="btn-alternative">キャンセル</button>
                 <form method="POST" action="{{ route('settings.holiday_template_add') }}" class="inline">
                     @csrf

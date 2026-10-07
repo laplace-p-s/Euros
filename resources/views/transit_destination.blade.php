@@ -113,7 +113,7 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
+                    <i aria-hidden="true" class="ti ti-info-circle shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
@@ -126,10 +126,10 @@
 
             {{-- アクションボタン --}}
             <div class="mb-4 flex flex-wrap gap-2 items-center justify-between">
-                <button type="button" onclick="location.href='{{ route('transit') }}'" class="btn-alternative !mr-0 !mb-0">
+                <button type="button" onclick="location.href='{{ route('transit') }}'" class="btn-alternative mr-0! mb-0!">
                     <i class="ti ti-arrow-left"></i>&nbsp;交通費管理へ戻る
                 </button>
-                <button type="button" id="btn-add-destination" class="btn-blue !mr-0 !mb-0">
+                <button type="button" id="btn-add-destination" class="btn-blue mr-0! mb-0!">
                     <i class="ti ti-plus"></i>&nbsp;行き先を追加
                 </button>
             </div>
@@ -145,7 +145,7 @@
                     ピン留めすると交通費管理画面のクイック登録に表示され、1クリックで登録できます
                 </p>
             </div>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4 border border-gray-300 dark:border-gray-500">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg mb-4 border border-gray-300 dark:border-gray-500">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300 border-b border-gray-300 dark:border-gray-500">
@@ -163,18 +163,18 @@
                             <tr class="bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 {{ $destination->is_pinned ? 'row-pinned' : '' }}">
                                 <td class="py-3 px-4 whitespace-nowrap">
                                     @if($index > 0)
-                                    <button class="move-destination btn-alternative !mr-1 !mb-0 !py-1.5 !px-2" data-id="{{ $destination->id }}" data-direction="up" title="上へ">
+                                    <button class="move-destination btn-alternative mr-1! mb-0! py-1.5! px-2!" data-id="{{ $destination->id }}" data-direction="up" title="上へ">
                                         <i class="ti ti-arrow-up"></i>
                                     </button>
                                     @else
-                                    <button class="btn-disabled !mr-1 !mb-0 !py-1.5 !px-2" disabled><i class="ti ti-arrow-up"></i></button>
+                                    <button class="btn-disabled mr-1! mb-0! py-1.5! px-2!" disabled><i class="ti ti-arrow-up"></i></button>
                                     @endif
                                     @if($index < count($destinations) - 1)
-                                    <button class="move-destination btn-alternative !mr-0 !mb-0 !py-1.5 !px-2" data-id="{{ $destination->id }}" data-direction="down" title="下へ">
+                                    <button class="move-destination btn-alternative mr-0! mb-0! py-1.5! px-2!" data-id="{{ $destination->id }}" data-direction="down" title="下へ">
                                         <i class="ti ti-arrow-down"></i>
                                     </button>
                                     @else
-                                    <button class="btn-disabled !mr-0 !mb-0 !py-1.5 !px-2" disabled><i class="ti ti-arrow-down"></i></button>
+                                    <button class="btn-disabled mr-0! mb-0! py-1.5! px-2!" disabled><i class="ti ti-arrow-down"></i></button>
                                     @endif
                                 </td>
                                 <td class="py-3 px-4 font-medium text-gray-900 dark:text-white">{{ $destination->label }}</td>
@@ -235,8 +235,8 @@
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700">
-                    <button type="button" id="cancel-destination-modal" class="btn-alternative !mr-0 !mb-0">キャンセル</button>
-                    <button type="submit" class="btn-blue !mr-0 !mb-0">保存</button>
+                    <button type="button" id="cancel-destination-modal" class="btn-alternative mr-0! mb-0!">キャンセル</button>
+                    <button type="submit" class="btn-blue mr-0! mb-0!">保存</button>
                 </div>
             </form>
         </div>

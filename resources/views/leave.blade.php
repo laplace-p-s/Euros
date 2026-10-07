@@ -105,7 +105,7 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
+                    <i aria-hidden="true" class="ti ti-info-circle shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
@@ -120,7 +120,7 @@
             @if(!empty($autoGrantNeeded))
             <div class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 rounded-lg">
                 <div class="flex items-start">
-                    <i class="ti ti-alert-triangle flex-shrink-0 text-xl text-yellow-600 dark:text-yellow-400 mt-0.5"></i>
+                    <i class="ti ti-alert-triangle shrink-0 text-xl text-yellow-600 dark:text-yellow-400 mt-0.5"></i>
                     <div class="ml-3 flex-1">
                         <h3 class="text-sm font-medium text-yellow-800 dark:text-yellow-300">{{ $currentFY }}年度の自動付与</h3>
                         <div class="mt-1 text-sm text-yellow-700 dark:text-yellow-400">
@@ -178,10 +178,10 @@
                         </div>
                     </div>
                     <div class="flex-1 px-3 flex flex-wrap gap-2 justify-end self-end">
-                        <button type="button" id="btn-add-usage" class="btn-blue !mb-0">
+                        <button type="button" id="btn-add-usage" class="btn-blue mb-0!">
                             <i class="ti ti-plus"></i>&nbsp;休暇使用を登録
                         </button>
-                        <button type="button" id="btn-add-grant" class="btn-alternative-green !mb-0">
+                        <button type="button" id="btn-add-grant" class="btn-alternative-green mb-0!">
                             <i class="ti ti-circle-plus"></i>&nbsp;付与を追加
                         </button>
                     </div>
@@ -200,7 +200,7 @@
             @endphp
             <div class="grid grid-cols-1 {{ $gridClass }} gap-4 mb-4">
                 {{-- 有休カード --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -236,7 +236,7 @@
                 </div>
 
                 {{-- 年次休暇カード --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -266,7 +266,7 @@
 
                 {{-- 代休カード --}}
                 @if($showCompensatory)
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -297,7 +297,7 @@
 
                 {{-- 失効累積カード --}}
                 @if($showExpiredStock)
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg flex flex-col">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg flex flex-col">
                     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -325,7 +325,7 @@
             </div>
 
             {{-- 月別一覧 --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg mb-4">
                 <div class="p-4 border-b border-gray-200 dark:border-gray-700">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         <i class="ti ti-table"></i>&nbsp;月別一覧
@@ -420,7 +420,7 @@
             </div>
 
             {{-- 使用履歴 --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4" x-data="{ open: false }">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg mb-4" x-data="{ open: false }">
                 <button @click="open = !open" class="w-full p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         <i class="ti ti-history"></i>&nbsp;使用履歴
@@ -447,13 +447,13 @@
                                 </td>
                                 <td class="py-3 px-4">
                                     @if($usage['leave_type'] === 'paid')
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">{{ $usage['type_label'] }}</span>
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded-sm bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">{{ $usage['type_label'] }}</span>
                                     @elseif($usage['leave_type'] === 'annual')
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">{{ $usage['type_label'] }}</span>
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded-sm bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">{{ $usage['type_label'] }}</span>
                                     @elseif($usage['leave_type'] === 'expired_stock')
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300">{{ $usage['type_label'] }}</span>
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded-sm bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300">{{ $usage['type_label'] }}</span>
                                     @else
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">{{ $usage['type_label'] }}</span>
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded-sm bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">{{ $usage['type_label'] }}</span>
                                     @endif
                                 </td>
                                 <td class="py-3 px-4">{{ number_format($usage['days'], 1) }}</td>
@@ -475,7 +475,7 @@
             </div>
 
             {{-- 付与履歴 --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4" x-data="{ open: false }">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg mb-4" x-data="{ open: false }">
                 <button @click="open = !open" class="w-full p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                         <i class="ti ti-gift"></i>&nbsp;付与履歴
@@ -501,11 +501,11 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="py-3 px-4">
                                     @if($grant['leave_type'] === 'paid')
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">{{ $grant['type_label'] }}</span>
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded-sm bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">{{ $grant['type_label'] }}</span>
                                     @elseif($grant['leave_type'] === 'annual')
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">{{ $grant['type_label'] }}</span>
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded-sm bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">{{ $grant['type_label'] }}</span>
                                     @else
-                                    <span class="text-xs font-medium px-2 py-0.5 rounded bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">{{ $grant['type_label'] }}</span>
+                                    <span class="text-xs font-medium px-2 py-0.5 rounded-sm bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">{{ $grant['type_label'] }}</span>
                                     @endif
                                     @if($grant['is_auto'])
                                     <span class="text-xs text-gray-400 ml-1">自動</span>
