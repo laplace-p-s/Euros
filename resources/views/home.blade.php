@@ -36,11 +36,13 @@
                 }
             }).done(function (data) {
                 $('#w_time').text(data['w_time']);
+                $('#w_time_error').attr('data-tooltip', data['w_time_error']).toggle(data['w_time_error'] !== '');
                 $('#s_time').text(data['s_time']);
                 $('#e_time').text(data['e_time']);
             }).fail(function (){
                 console.log('fail renewal');
                 $('#w_time').text('? H');
+                $('#w_time_error').hide();
                 $('#s_time').text('??:??:??');
                 $('#e_time').text('??:??:??');
             });
@@ -91,7 +93,7 @@
                     <hr class="w-48 h-1 mx-auto my-3 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700">
                     {{--現在勤務時間表示--}}
                     <div class="flex justify-center items-center">
-                        <span id="w_time" class="w-32 flex justify-center items-center dark:text-gray-100">{{$today_info['w_time']}}</span>
+                        <span class="w-32 flex justify-center items-center dark:text-gray-100"><span id="w_time">{{$today_info['w_time']}}</span><i id="w_time_error" class="ti ti-alert-triangle text-red-600 dark:text-red-400 ml-1" data-tooltip="{{$today_info['w_time_error']}}" @if($today_info['w_time_error'] === '') style="display: none" @endif></i></span>
                     </div>
                     {{--現在勤務時間表示--}}
                     {{--当日日付記録表示--}}

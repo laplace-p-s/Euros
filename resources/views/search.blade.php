@@ -159,13 +159,21 @@
                                 <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="grid-year">
                                     年
                                 </label>
-                                {{ Form::select('year',$year_list,$selected_year,['class'=>'select-normal w-full','id'=>'grid-year']) }}
+                                <select class="select-normal w-full" id="grid-year" name="year">
+                                    @foreach ($year_list as $value => $label)
+                                        <option value="{{ $value }}" @selected((string) $value === (string) $selected_year)>{{ $label }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="w-full md:w-1/6 px-3">
                                 <label class="block uppercase tracking-wide text-gray-700 dark:text-gray-400 text-xs font-bold mb-2" for="grid-month">
                                     月
                                 </label>
-                                {{ Form::select('month',$month_list,$selected_month,['class'=>'select-normal w-full','id'=>'grid-month']) }}
+                                <select class="select-normal w-full" id="grid-month" name="month">
+                                    @foreach ($month_list as $value => $label)
+                                        <option value="{{ $value }}" @selected((string) $value === (string) $selected_month)>{{ $label }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="flex flex-row-reverse">
@@ -215,7 +223,9 @@
                             </thead>
                             <tbody class="result_table_body">
                                 @foreach($result_list as $result_item)
-                                @if($result_item['is_today'] == 1){{--今日--}}
+                                @if($result_item['work_time_error'] !== ''){{--勤務時間エラー--}}
+                                <tr class="bg-red-50 border-b dark:bg-red-950 dark:border-gray-700 hover:bg-red-100 dark:hover:bg-red-900">
+                                @elseif($result_item['is_today'] == 1){{--今日--}}
                                 <tr class="bg-sky-50 border-b dark:bg-sky-800 dark:border-gray-700 hover:bg-sky-100 dark:hover:bg-sky-600">
                                 @else
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -243,7 +253,7 @@
                                     @else
                                     <td class="py-4 px-6 e_datetime">{{$result_item['e_datetime']}}</td>
                                     @endif
-                                    <td class="py-4 px-6 work_time">{{$result_item['work_time']}}</td>
+                                    <td class="py-4 px-6 work_time">{{$result_item['work_time']}}@if($result_item['work_time_error'] !== '')<i class="ti ti-alert-triangle text-red-600 dark:text-red-400 ml-1" data-tooltip="{{$result_item['work_time_error']}}"></i>@endif</td>
                                     <td class="memo py-4 px-6"><span class="memo_show">{{$result_item['memo']}}</span><input type="text" class="memo_input memo-input" style="display: none" value="{{$result_item['memo']}}"/></td>
                                     <td class="py-4 px-6">
                                         <button class="btn_show btn-purple-to-blue-b group">

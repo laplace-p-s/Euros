@@ -63,7 +63,7 @@
                                 </tr>
                                 <tr class="bg-white dark:bg-gray-800">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">勤務時間</th>
-                                    <td class="px-6 py-4">{{$detail_data['work_time']}}</td>
+                                    <td class="px-6 py-4">{{$detail_data['work_time']}}@if($detail_data['work_time_error'] !== '')<i class="ti ti-alert-triangle text-red-600 dark:text-red-400 ml-1" data-tooltip="{{$detail_data['work_time_error']}}"></i>@endif</td>
                                 </tr>
                                 <tr class="bg-white dark:bg-gray-800">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">メモ</th>
