@@ -1,4 +1,5 @@
 import './bootstrap';
+import './tooltip';
 
 import Alpine from 'alpinejs';
 import jQuery from 'jquery';

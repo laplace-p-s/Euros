@@ -39,5 +39,7 @@
             @include('layouts.footer')
         </div>
         @include('layouts.top_button')
+        {{-- data-tooltip属性を持つ要素のホバー/タップで表示する吹き出し(resources/js/tooltip.js) --}}
+        <div id="tooltip" role="tooltip" class="fixed z-50 hidden max-w-xs px-2.5 py-1 text-[13px] leading-[18px] text-red-600 bg-white border border-red-600 rounded-lg shadow-lg pointer-events-none"></div>
     </body>
 </html>

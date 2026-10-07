@@ -100,13 +100,19 @@ class SearchController extends Controller
         unset($record); //参照渡ししたforeachのバグ回避用
         //勤務時間計算処理 - 日付をまたぐものはひとまず考えないものとする
         $work_time = '-';
+        $work_time_error = '';
         if($s_datetime != '-' && $e_datetime != '-'){
             $s_date = new Carbon('2020-01-10 '.$s_datetime);
             $e_date = new Carbon('2020-01-10 '.$e_datetime);
-            //分で出力し時間に変換、その後少数第二位で四捨五入
-            $output_work_time = $s_date->diffInMinutes($e_date) / 60;
-            if ($output_work_time > 4.0) $output_work_time = $output_work_time - 1; //休憩時間を加味し、4時間を超える場合は-1Hする
-            $work_time = round($output_work_time,1).' H';
+            if ($e_date->lt($s_date)){
+                //退勤が出勤より前の場合は計算せずエラーとする
+                $work_time_error = '退勤時刻が出勤時刻より前になっています';
+            }else{
+                //分で出力し時間に変換、その後少数第二位で四捨五入
+                $output_work_time = $s_date->diffInMinutes($e_date) / 60;
+                if ($output_work_time > 4.5) $output_work_time = $output_work_time - 1; //休憩時間を加味し、4.5時間を超える場合は-1Hする
+                $work_time = round($output_work_time,1).' H';
+            }
         }
         //メモデータリスト処理
         $memo = '';
@@ -126,6 +132,7 @@ class SearchController extends Controller
         $detail_data['s_datetime'] = $s_datetime; //出勤時間
         $detail_data['e_datetime'] = $e_datetime; //退勤時間
         $detail_data['work_time']  = $work_time; //勤務時間
+        $detail_data['work_time_error'] = $work_time_error; //勤務時間エラー内容(空ならエラーなし)
         $detail_data['memo']       = $memo; //メモ
         $detail_data['attend_count'] = count($records_attend);
         $detail_data['leave_count'] = count($records_leave);

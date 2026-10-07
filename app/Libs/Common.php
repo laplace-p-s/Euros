@@ -31,11 +31,16 @@ class Common
         $ret['e_time'] = is_null($e_datetime) ? '--:--:--' : $e_datetime->format('H:i:s');
         //勤務時間計算処理
         $ret['w_time'] = '- H';
-        if (is_null($e_datetime)) $e_datetime = new Carbon('now'); //出勤時間から現在時刻を計算する
-        if($s_datetime != null && $e_datetime != null){
+        $ret['w_time_error'] = '';
+        $is_working = is_null($e_datetime);
+        if ($is_working) $e_datetime = new Carbon('now'); //出勤時間から現在時刻を計算する
+        if($s_datetime != null && $e_datetime->lt($s_datetime)){
+            //出勤が退勤(勤務中は現在時刻)より後の場合は計算せずエラーとする
+            $ret['w_time_error'] = $is_working ? '出勤時刻が現在時刻より後になっています' : '退勤時刻が出勤時刻より前になっています';
+        }else if($s_datetime != null && $e_datetime != null){
             //分で出力し時間に変換、その後少数第二位で四捨五入
             $output_work_time = $s_datetime->diffInMinutes($e_datetime) / 60;
-            if ($output_work_time > 4.0) $output_work_time = $output_work_time - 1; //休憩時間を加味し、4時間を超える場合は-1Hする
+            if ($output_work_time > 4.5) $output_work_time = $output_work_time - 1; //休憩時間を加味し、4.5時間を超える場合は-1Hする
             $ret['w_time'] = round($output_work_time,1).' H';
         }
         return $ret;
@@ -101,6 +106,7 @@ class Common
                 'is_manual_s' => 0,
                 'is_manual_e' => 0,
                 'work_time' => '-',
+                'work_time_error' => '',
                 'memo' => '',
                 'holiday' => 0,
                 'holiday_name' => '',
@@ -149,6 +155,12 @@ class Common
             if($result['s_datetime'] != '-' && $result['e_datetime'] != '-'){
                 $s_date = new Carbon('2020-01-10 '.$result['s_datetime']);
                 $e_date = new Carbon('2020-01-10 '.$result['e_datetime']);
+                if ($e_date->lt($s_date)){
+                    //退勤が出勤より前の場合は計算せずエラーとする(集計対象外)
+                    $result_list[$count]['work_time_error'] = '退勤時刻が出勤時刻より前になっています';
+                    $count++;
+                    continue;
+                }
                 //分で出力し時間に変換、その後少数第二位で四捨五入
                 $output_work_time = $s_date->diffInMinutes($e_date) / 60;
                 if ($output_work_time > 4.5) $output_work_time = $output_work_time - 1; //休憩時間を加味し、4.5時間を超える場合は-1Hする
