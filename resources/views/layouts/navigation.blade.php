@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-50 shadow-sm">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 sticky top-0 z-50 shadow-xs">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -36,7 +36,7 @@
             <!-- Theme Toggle + Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Dark/Light Mode Toggle -->
-                <button id="theme-toggle-desktop" onclick="toggleTheme()" class="mr-3 p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150" title="テーマ切替">
+                <button id="theme-toggle-desktop" onclick="toggleTheme()" class="mr-3 p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-hidden transition ease-in-out duration-150" title="テーマ切替">
                     <!-- Sun icon (shown in light mode) -->
                     <i id="theme-icon-sun-desktop" class="ti ti-sun text-xl"></i>
                     <!-- Moon icon (shown in dark mode) -->
@@ -45,7 +45,7 @@
 
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 focus:outline-hidden transition ease-in-out duration-150">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ml-1">
@@ -75,11 +75,11 @@
 
             <!-- Theme Toggle (Mobile) + Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
-                <button onclick="toggleTheme()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition duration-150 ease-in-out mr-1" title="テーマ切替">
+                <button onclick="toggleTheme()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-hidden transition duration-150 ease-in-out mr-1" title="テーマ切替">
                     <i id="theme-icon-sun-mobile" class="ti ti-sun text-xl"></i>
                     <i id="theme-icon-moon-mobile" class="ti ti-moon text-xl hidden"></i>
                 </button>
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:bg-gray-800 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-gray-800 focus:text-gray-500 transition duration-150 ease-in-out">
                     <i :class="{'hidden': open, 'inline-block': ! open }" class="ti ti-menu-2 text-2xl inline-block"></i>
                     <i :class="{'hidden': ! open, 'inline-block': open }" class="ti ti-x text-2xl hidden"></i>
                 </button>

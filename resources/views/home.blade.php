@@ -69,7 +69,7 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
+                    <i aria-hidden="true" class="ti ti-info-circle shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text">
                         登録が完了しました。
@@ -82,7 +82,7 @@
             </div>
             {{-- Infoエリア --}}
             {{-- mainエリア --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-center items-center mb-2">
                         <span id="date" class="text-2xl dark:text-gray-100"></span>
@@ -90,7 +90,7 @@
                     <div class="flex justify-center items-center mb-2">
                         <span id="time" class="text-2xl dark:text-gray-100"></span>
                     </div>
-                    <hr class="w-48 h-1 mx-auto my-3 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700">
+                    <hr class="w-48 h-1 mx-auto my-3 bg-gray-100 border-0 rounded-sm md:my-10 dark:bg-gray-700">
                     {{--現在勤務時間表示--}}
                     <div class="flex justify-center items-center">
                         <span class="w-32 flex justify-center items-center dark:text-gray-100"><span id="w_time">{{$today_info['w_time']}}</span><i id="w_time_error" class="ti ti-alert-triangle text-red-600 dark:text-red-400 ml-1" data-tooltip="{{$today_info['w_time_error']}}" @if($today_info['w_time_error'] === '') style="display: none" @endif></i></span>
@@ -117,7 +117,7 @@
             {{-- mainエリア --}}
             {{-- summaryエリア --}}
             <div class="flex flex-col sm:flex-row gap-3 mt-3">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg sm:w-1/2">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg sm:w-1/2">
                     <div class="p-6 text-gray-900">
                         <span class="font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_disp'] }} サマリ</span><br>
                         <span class="text-xs text-gray-900 whitespace-nowrap dark:text-white">{{ $summary_info['now_announce'] }} 現在</span><br>
@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 {{-- 休暇残数サマリ --}}
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg sm:w-1/2">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg sm:w-1/2">
                     <div class="px-5 pt-4 pb-2 flex items-center justify-between">
                         <span class="font-medium text-gray-900 dark:text-white">{{ $leaveSummary['currentFY'] }}年度 休暇残数</span>
                         <a href="{{ route('leave') }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline"><i class="ti ti-arrow-right"></i>&nbsp;詳細</a>
@@ -154,7 +154,7 @@
                     <div class="px-5 pb-4 space-y-3">
                         {{-- 有休 --}}
                         <div class="flex items-center gap-3">
-                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex-shrink-0">
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 shrink-0">
                                 <i class="ti ti-beach text-blue-600 dark:text-blue-400 text-xl"></i>
                             </span>
                             <div class="flex-1 min-w-0">
@@ -171,7 +171,7 @@
                         <hr class="border-gray-100 dark:border-gray-700">
                         {{-- 年次休暇 --}}
                         <div class="flex items-center gap-3">
-                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 flex-shrink-0">
+                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 shrink-0">
                                 <i class="ti ti-calendar-event text-green-600 dark:text-green-400 text-xl"></i>
                             </span>
                             <div class="flex-1 min-w-0">

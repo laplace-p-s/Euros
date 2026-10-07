@@ -20,5 +20,5 @@
     });
 </script>
 <div>
-    <button id="top_scroll" type="button" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-3 focus:outline-none focus:ring-blue-300 rounded-lg text-xl p-2.5 text-center fixed items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 bottom-7 right-7 w-12"><i class="ti ti-arrow-up"></i></button>
+    <button id="top_scroll" type="button" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-3 focus:outline-hidden focus:ring-blue-300 rounded-lg text-xl p-2.5 text-center fixed items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 bottom-7 right-7 w-12"><i class="ti ti-arrow-up"></i></button>
 </div>

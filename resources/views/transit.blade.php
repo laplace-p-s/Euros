@@ -163,7 +163,7 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
+                    <i aria-hidden="true" class="ti ti-info-circle shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
@@ -182,7 +182,7 @@
                             対象月
                         </label>
                         <div class="flex items-center gap-2">
-                            <button type="button" id="month-back" class="btn-alternative !mr-0 !mb-0 !py-2 !px-3" title="前月">
+                            <button type="button" id="month-back" class="btn-alternative mr-0! mb-0! py-2! px-3!" title="前月">
                                 <i class="ti ti-chevron-left"></i>
                             </button>
                             <select id="month-select" class="select-normal">
@@ -190,7 +190,7 @@
                                 <option value="{{ $month }}" {{ $month == $selectedMonthValue ? 'selected' : '' }}>{{ str_replace('-', '年', $month) }}月</option>
                                 @endforeach
                             </select>
-                            <button type="button" id="month-next" class="btn-alternative !mr-0 !mb-0 !py-2 !px-3" title="翌月">
+                            <button type="button" id="month-next" class="btn-alternative mr-0! mb-0! py-2! px-3!" title="翌月">
                                 <i class="ti ti-chevron-right"></i>
                             </button>
                         </div>
@@ -202,15 +202,15 @@
                             <span class="ml-1 text-xs text-gray-500 dark:text-gray-400">({{ count($records) }}件)</span>
                         </div>
                         @if(count($destinations) > 0)
-                        <button type="button" id="btn-add-record" class="btn-blue !mr-0 !mb-0">
+                        <button type="button" id="btn-add-record" class="btn-blue mr-0! mb-0!">
                             <i class="ti ti-plus"></i>&nbsp;交通費を登録
                         </button>
                         @else
-                        <button type="button" class="btn-disabled !mr-0 !mb-0" disabled title="先に行き先を登録してください">
+                        <button type="button" class="btn-disabled mr-0! mb-0!" disabled title="先に行き先を登録してください">
                             <i class="ti ti-plus"></i>&nbsp;交通費を登録
                         </button>
                         @endif
-                        <button type="button" onclick="location.href='{{ route('transit.destination') }}'" class="btn-alternative-green !mr-0 !mb-0">
+                        <button type="button" onclick="location.href='{{ route('transit.destination') }}'" class="btn-alternative-green mr-0! mb-0!">
                             <i class="ti ti-map-pin"></i>&nbsp;行き先の管理
                         </button>
                     </div>
@@ -220,7 +220,7 @@
             @if(count($destinations) == 0)
             <div class="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 rounded-lg">
                 <div class="flex items-start">
-                    <i class="ti ti-alert-triangle flex-shrink-0 text-xl text-yellow-600 dark:text-yellow-400 mt-0.5"></i>
+                    <i class="ti ti-alert-triangle shrink-0 text-xl text-yellow-600 dark:text-yellow-400 mt-0.5"></i>
                     <div class="ml-3 text-sm text-yellow-700 dark:text-yellow-400">
                         <p><a href="{{ route('transit.destination') }}" class="underline font-medium">行き先の管理</a>から行き先を登録すると、交通費を登録できるようになります。</p>
                         <p class="mt-1 text-xs">※ 往復する場合は「自宅→本社」「本社→自宅」のように行きと帰りを別々に登録してください</p>
@@ -234,7 +234,7 @@
             <form id="form-quick-record" method="POST" action="{{ route('transit.record.quick') }}" class="mb-4">
                 @csrf
                 <input type="hidden" name="month" value="{{ $selectedMonthValue }}">
-                <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border border-gray-300 dark:border-gray-500 p-4">
+                <div class="bg-white dark:bg-gray-800 shadow-xs sm:rounded-lg border border-gray-300 dark:border-gray-500 p-4">
                     <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
                         <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">
                             <i class="ti ti-pinned"></i>&nbsp;クイック登録
@@ -248,7 +248,7 @@
                     <div class="mt-3 flex flex-wrap gap-2">
                         @foreach($pinnedDestinations as $destination)
                         <button type="submit" name="destination_id" value="{{ $destination->id }}" class="quick-record btn-purple-to-blue-b group">
-                            <span class="btn-purple-to-blue-s inline-flex items-center gap-2 text-left !px-3 !py-2">
+                            <span class="btn-purple-to-blue-s inline-flex items-center gap-2 text-left px-3! py-2!">
                                 <i class="ti ti-plus text-base"></i>
                                 <span class="inline-flex flex-col leading-tight">
                                     <span class="text-sm font-medium">{{ $destination->label }}</span>
@@ -275,11 +275,11 @@
                 <div class="flex items-center">
                     <textarea id="copy-area" style="display: none"></textarea>
                     <span class="copy_mes text-xs text-gray-700 dark:text-gray-400 hidden mr-2">クリップボードにコピーしました！</span>
-                    <button type="button" class="copy btn-alternative !mr-2 !mb-0" title="日付・行き先・経路・金額・備考をコピー"><i class="ti ti-copy"></i>&nbsp;コピー</button>
-                    <button type="button" class="copy_seq btn-alternative-green !mr-0 !mb-0" title="日付・連番・行き先をコピー"><i class="ti ti-list-numbers"></i>&nbsp;連番コピー</button>
+                    <button type="button" class="copy btn-alternative mr-2! mb-0!" title="日付・行き先・経路・金額・備考をコピー"><i class="ti ti-copy"></i>&nbsp;コピー</button>
+                    <button type="button" class="copy_seq btn-alternative-green mr-0! mb-0!" title="日付・連番・行き先をコピー"><i class="ti ti-list-numbers"></i>&nbsp;連番コピー</button>
                 </div>
             </div>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-4 border border-gray-300 dark:border-gray-500">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs sm:rounded-lg mb-4 border border-gray-300 dark:border-gray-500">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300 border-b border-gray-300 dark:border-gray-500">
@@ -400,8 +400,8 @@
                     </div>
                 </div>
                 <div class="flex justify-end gap-2 p-4 border-t dark:border-gray-700">
-                    <button type="button" id="cancel-record-modal" class="btn-alternative !mr-0 !mb-0">キャンセル</button>
-                    <button type="submit" id="record-submit" class="btn-blue !mr-0 !mb-0">登録</button>
+                    <button type="button" id="cancel-record-modal" class="btn-alternative mr-0! mb-0!">キャンセル</button>
+                    <button type="submit" id="record-submit" class="btn-blue mr-0! mb-0!">登録</button>
                 </div>
             </form>
         </div>

@@ -147,7 +147,7 @@
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-300">
                     {{-- 検索Formエリア --}}
                     <form method="post">
@@ -178,7 +178,7 @@
                         </div>
                         <div class="flex flex-row-reverse">
                             <button type="submit" class="btn-blue" name="action" value="search"><i class="ti ti-search"></i>&nbsp;検索</button>
-                            <button type="submit" class="btn-blue !mr-auto" name="action" value="next">翌月へ&nbsp;<i class="ti ti-chevron-right"></i></button>
+                            <button type="submit" class="btn-blue mr-auto!" name="action" value="next">翌月へ&nbsp;<i class="ti ti-chevron-right"></i></button>
                             <button type="submit" class="btn-blue" name="action" value="back"><i class="ti ti-chevron-left"></i>&nbsp;前月へ</button>
                         </div>
                         <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">

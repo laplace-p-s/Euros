@@ -19,7 +19,7 @@
             {{-- Infoエリア --}}
             <div id="alert-div" class="hidden">
                 <div class="alert-1-div" role="alert">
-                    <i aria-hidden="true" class="ti ti-info-circle flex-shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
+                    <i aria-hidden="true" class="ti ti-info-circle shrink-0 text-xl text-blue-700 dark:text-blue-800"></i>
                     <span class="sr-only">Info</span>
                     <div class="alert-1-text"></div>
                     <button id="alert-btn" type="button" class="alert-1-close" aria-label="Close">
@@ -29,7 +29,7 @@
                 </div>
             </div>
             {{-- Infoエリア --}}
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm dark:shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xs dark:shadow-xs sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <form method="POST" action="{{ route('settings.general_save') }}">
                         @csrf
@@ -57,7 +57,7 @@
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="hidden" name="paid_leave_auto_grant" value="0">
                                     <input type="checkbox" name="paid_leave_auto_grant" value="1" class="sr-only peer" {{ $settings->paid_leave_auto_grant ? 'checked' : '' }}>
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
                                     <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">有休自動付与</span>
                                 </label>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">年度開始時にページアクセスした際、確認の上で自動付与します</p>
@@ -77,7 +77,7 @@
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="hidden" name="show_expired_stock" value="0">
                                     <input type="checkbox" name="show_expired_stock" value="1" class="sr-only peer" {{ $settings->show_expired_stock ? 'checked' : '' }}>
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
                                     <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">失効累積を表示</span>
                                 </label>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">有休の失効分をストックとして累積表示し、特別時に使用できるようにします</p>
@@ -92,7 +92,7 @@
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="hidden" name="show_compensatory" value="0">
                                     <input type="checkbox" name="show_compensatory" value="1" class="sr-only peer" {{ $settings->show_compensatory ? 'checked' : '' }}>
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
                                     <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">代休カードを表示</span>
                                 </label>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">ONにすると、サマリーに代休カードを表示します</p>
@@ -101,7 +101,7 @@
                                 <label class="relative inline-flex items-center cursor-pointer">
                                     <input type="hidden" name="compensatory_hide_zero" value="0">
                                     <input type="checkbox" name="compensatory_hide_zero" value="1" class="sr-only peer" {{ $settings->compensatory_hide_zero ? 'checked' : '' }}>
-                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
+                                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-hidden peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:after:border-gray-500 peer-checked:bg-blue-600"></div>
                                     <span class="ml-3 text-sm font-medium text-gray-900 dark:text-white">0.5日以上の時のみ表示</span>
                                 </label>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">ONにすると、代休残が0.5日未満の場合はカードを非表示にします</p>
